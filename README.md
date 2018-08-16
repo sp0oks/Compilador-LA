@@ -5,8 +5,7 @@ Compilador de linguagem LA para linguagem C.
 Para montar o projeto:
   - Analisador Sintático: 
     ```bash
-       cd src/
-       antlr4 LA.g4
-       javac LA*.java
+       ./gradlew build
+       cd build/classes/java/main/
+       grun LA programa -gui
     ```
-    execute `grun LA programa -gui` para testar a sintaxe.
