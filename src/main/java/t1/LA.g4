@@ -1,5 +1,9 @@
 ﻿grammar LA;
 
+@header {package main.java.t1;} 
+
+@lexer::members {void erroLexico(String msg) { throw new ParseCancellationException(msg); }}
+
 programa 
 :	declaracoes 'algoritmo'  corpo 'fim_algoritmo'
 ;
@@ -266,5 +270,5 @@ ESPACO
 
 ERRO
 :	.
-	{throw new ParseCancellationException("Linha " + getLine() + ": " + getText() + " - simbolo nao identificado");}
+	{erroLexico("Linha " + getLine() + ": " + getText() + " - simbolo nao identificado");}
 ;

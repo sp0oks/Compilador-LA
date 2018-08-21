@@ -1,4 +1,4 @@
-package t1;
+package main.java.t1;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;

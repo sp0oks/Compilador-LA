@@ -1,8 +1,5 @@
-package t1;
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+package main.java.t1;
+
 public class SaidaParser {
 
     StringBuffer conteudo;
