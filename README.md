@@ -5,7 +5,6 @@ Compilador de linguagem LA para linguagem C.
 Para montar o projeto:
   - Analisador Sintático: 
     ```bash
-       ./gradlew build
-       cd build/classes/java/main/
-       grun LA programa -gui
+       ./gradlew fatJar
+       java -jar ./build/libs/cla-1.0.jar <arquivo de teste>
     ```
