@@ -18,6 +18,9 @@
 *.tar.gz
 *.rar
 
+# Gradle versioning files
+.gradle/
+
 # OSX trash
 *.DS_Store
 
