@@ -1,5 +1,5 @@
-// Generated from src/main/java/t1/LA.g4 by ANTLR 4.7.1
-package main.java.t1;
+// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/t1/LA.g4 by ANTLR 4.7
+package t1;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;

@@ -1,6 +1,6 @@
 ﻿grammar LA;
 
-@header {package main.java.t1;} 
+@header {package t1;}
 
 @lexer::members {void erroLexico(String msg) { throw new ParseCancellationException(msg); }}
 
@@ -20,7 +20,7 @@ decl_local_global
 declaracao_local
 :	'declare'  variavel
 |	'constante'  IDENT ':' tipo_basico '=' valor_constante
-|	'tipo'  IDENT '.' tipo
+|	'tipo'  IDENT ':' tipo
 ;
 
 variavel
@@ -256,6 +256,10 @@ NUM_INT
 
 NUM_REAL 
 :	NUM_INT '.' NUM_INT
+;
+
+COMENT_ERRO
+:   '{' ~('\r' | '\n' | '}')*
 ;
 
 COMENT

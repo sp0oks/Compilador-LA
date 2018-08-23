@@ -1,9 +1,6 @@
-package main.java.t1;
+package t1;
 
-import org.antlr.v4.runtime.ANTLRErrorListener;
-import org.antlr.v4.runtime.Parser;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
+import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
 
@@ -20,7 +17,11 @@ public class ErrorListener implements ANTLRErrorListener {
     @Override
     public void syntaxError(Recognizer<?, ?> rcgnzr, Object o, int i, int i1, String string, RecognitionException re) {
         if (!sp.isModificado()) {
-            sp.println("Erro: linha " + i + ":" + i1);
+	        Token t = (Token)o;
+	        String token = t.getText();
+	        if (token.equals("<EOF>"))
+	            token = "EOF";
+            sp.println("Linha " + i + ": erro sintatico proximo a " + token);
         }
     }
 

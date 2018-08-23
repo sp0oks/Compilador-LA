@@ -1,16 +1,11 @@
-package main.java.t1;
+package t1;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.FileNotFoundException;
+import java.io.*;
 
 public class LATester {
 
@@ -33,7 +28,7 @@ public class LATester {
 	} catch (FileNotFoundException fnfe) {
 	    System.out.println("Erro: o arquivo passado no argumento não foi encontrado."); 
 	}
-	
+	sp.print("Fim da compilacao");	
 	String out = sp.toString();
 	if (!out.equals("")) {
 	    try {

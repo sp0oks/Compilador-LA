@@ -1,4 +1,4 @@
-package main.java.t1;
+package t1;
 
 public class SaidaParser {
 
@@ -14,6 +14,11 @@ public class SaidaParser {
         if (!modificado) modificado = true;
         conteudo.append(texto);
         conteudo.append("\n");
+    }
+
+    public void print(String texto) {
+        if (!modificado) modificado = true;
+        conteudo.append(texto);
     }
 
     public boolean isModificado() {
