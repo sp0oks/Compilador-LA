@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 import java.io.*;
 
-public class LATester {
+public class LACompiler {
 
     public static void main(String args[]) throws IOException, RecognitionException {
         SaidaParser sp = new SaidaParser();

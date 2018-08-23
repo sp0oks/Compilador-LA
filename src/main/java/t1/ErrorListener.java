@@ -22,7 +22,6 @@ public class ErrorListener implements ANTLRErrorListener {
 	        if (tk.equals("<EOF>"))
 	            tk = "EOF";
             sp.println("Linha " + i + ": erro sintatico proximo a " + tk);
-            sp.print("Fim da compilacao");
         }
     }
 

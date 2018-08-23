@@ -70,6 +70,7 @@ registro
 
 declaracao_global
 :	'procedimento'  IDENT '(' parametros? ')' (declaracao_local)* (cmd)* 'fim_procedimento'
+|   'funcao' IDENT '(' parametros? ')' ':' tipo_estendido (declaracao_local)* (cmd)* 'fim_funcao'
 ;
 
 parametro
@@ -270,7 +271,7 @@ ESPACO
 
 COMENT_N_FECHADO
 :   '{' .*?
-    {erroLexico("Linha " + getLine() + ": comentario nao fechado");}
+    {erroLexico("Linha " + (getLine()+1) + ": comentario nao fechado");}
 ;
 
 SIMB_N_IDENTIFICADO

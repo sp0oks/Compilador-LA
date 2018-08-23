@@ -6,7 +6,7 @@ repositories {
 
 task fatJar(type: Jar) {
     manifest {
-        attributes 'Main-Class': 't1.LATester'
+        attributes 'Main-Class': 't1.LACompiler'
     }
     baseName = 'cla'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
