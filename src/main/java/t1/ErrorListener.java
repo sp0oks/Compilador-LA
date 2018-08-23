@@ -18,10 +18,11 @@ public class ErrorListener implements ANTLRErrorListener {
     public void syntaxError(Recognizer<?, ?> rcgnzr, Object o, int i, int i1, String string, RecognitionException re) {
         if (!sp.isModificado()) {
 	        Token t = (Token)o;
-	        String token = t.getText();
-	        if (token.equals("<EOF>"))
-	            token = "EOF";
-            sp.println("Linha " + i + ": erro sintatico proximo a " + token);
+	        String tk = t.getText();
+	        if (tk.equals("<EOF>"))
+	            tk = "EOF";
+            sp.println("Linha " + i + ": erro sintatico proximo a " + tk);
+            sp.print("Fim da compilacao");
         }
     }
 
