@@ -4,13 +4,27 @@ repositories {
     mavenCentral()
 }
 
+clean {
+    file('resultadosTeste').deleteDir()
+}
+
 task fatJar(type: Jar) {
+    description = 'Generate Compiler Executable'
     manifest {
         attributes 'Main-Class': 't1.LACompiler'
     }
     baseName = 'cla'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
+}
+
+String testResultsDir = "${rootDir}/resultadosTeste/"
+
+task testParser(type: Exec) {
+    description = 'Test Parser Execution'
+    executable = "java" 
+    args  = ["-jar", "${rootDir}/libs/CorretorTrabalho1.jar", "java -jar ${rootDir}/build/libs/cla.jar", 'gcc',
+	     "${testResultsDir}/sintatico", "${rootDir}/src/test/casosDeTesteT1/", "G12", 'sintatico']
 }
 
 dependencies {
