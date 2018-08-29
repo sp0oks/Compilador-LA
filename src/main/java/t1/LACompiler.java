@@ -11,6 +11,7 @@ public class LACompiler {
 
     public static void main(String args[]) throws IOException, RecognitionException {
         SaidaParser sp = new SaidaParser();
+        LAParser.ProgramaContext arvore = null; //Adicionado para a análise semantica
         try {
             ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(args[0]));
 		    LALexer lexer = new LALexer(input);
@@ -18,7 +19,9 @@ public class LACompiler {
             LAParser parser = new LAParser(tokens);
 
 		    parser.addErrorListener(new ErrorListener(sp));
-            parser.programa();
+
+            arvore = parser.programa();
+
         } catch (ParseCancellationException pce) {
                 if (pce.getMessage() != null) {
                     sp.println(pce.getMessage());
@@ -28,6 +31,9 @@ public class LACompiler {
         } catch (FileNotFoundException fnfe) {
             System.out.println("Erro: o arquivo passado no argumento não foi encontrado.");
         }
+
+      Visitor visitor = new Visitor(sp);
+      visitor.visitPrograma(arvore); //Descomente essa linha pra testar o Visitor
 
         if (sp.isModificado()) {
             sp.print("Fim da compilacao");
