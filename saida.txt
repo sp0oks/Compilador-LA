@@ -1,0 +1,2 @@
+Linhas 7: identificador nome nao declarado
+Fim da compilacao

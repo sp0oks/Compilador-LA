@@ -20,7 +20,7 @@ public class LACompiler {
 
 		    parser.addErrorListener(new ErrorListener(sp));
 
-            arvore = parser.programa();
+        arvore = parser.programa();
 
         } catch (ParseCancellationException pce) {
                 if (pce.getMessage() != null) {
@@ -32,8 +32,10 @@ public class LACompiler {
             System.out.println("Erro: o arquivo passado no argumento não foi encontrado.");
         }
 
-      Visitor visitor = new Visitor(sp);
-      visitor.visitPrograma(arvore); //Descomente essa linha pra testar o Visitor
+      if(!sp.isModificado()){ //Só faz a análise semantica caso não tenho erra sintático
+        Visitor visitor = new Visitor(sp);
+        visitor.visitPrograma(arvore);
+      }
 
         if (sp.isModificado()) {
             sp.print("Fim da compilacao");
