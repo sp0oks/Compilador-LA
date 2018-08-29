@@ -4,7 +4,7 @@
 
 @lexer::members {void erroLexico(String msg) { throw new ParseCancellationException(msg); }}
 
-programa 
+programa
 :	declaracoes 'algoritmo'  corpo 'fim_algoritmo'
 ;
 
@@ -24,7 +24,7 @@ declaracao_local
 ;
 
 variavel
-: identificador (','  identificador)* ':' tipo
+: id1=identificador (',' id2+=identificador)* ':' tipo
 ;
 
 identificador
@@ -41,10 +41,10 @@ tipo
 ;
 
 tipo_basico
-:	'literal' 
-|	'inteiro' 
-|	'real' 
-|	'logico' 
+:	'literal'
+|	'inteiro'
+|	'real'
+|	'logico'
 ;
 
 tipo_basico_ident
@@ -60,8 +60,8 @@ valor_constante
 :	CADEIA
 |	NUM_INT
 |	NUM_REAL
-|	'verdadeiro' 
-|	'falso' 
+|	'verdadeiro'
+|	'falso'
 ;
 
 registro
@@ -85,7 +85,7 @@ corpo
 :	(declaracao_local)* (cmd)*
 ;
 
-cmd 
+cmd
 :	cmdLeia
 |	cmdEscreva
 |	cmdSe
@@ -119,7 +119,7 @@ cmdPara
 ;
 
 cmdEnquanto
-:	'enquanto'  expressao 'faca' (cmd)* 'fim_enquanto' 
+:	'enquanto'  expressao 'faca' (cmd)* 'fim_enquanto'
 ;
 
 cmdFaca
@@ -181,7 +181,7 @@ op2
 
 
 op3
-:        '%' 
+:        '%'
 ;
 
 
@@ -196,7 +196,7 @@ parcela_unario
 |        IDENT '(' expressao (','  expressao)* ')'
 |        NUM_INT
 |        NUM_REAL
-|        '(' expressao ')' 
+|        '(' expressao ')'
 ;
 
 parcela_nao_unario
@@ -205,21 +205,21 @@ parcela_nao_unario
 ;
 
 exp_relacional
-:        exp_aritmetica (op_relacional exp_aritmetica)? 
-; 
+:        exp_aritmetica (op_relacional exp_aritmetica)?
+;
 
 op_relacional
-:	'=' 
-|	'<>' 
-|	'>=' 
-|	'<=' 
+:	'='
+|	'<>'
+|	'>='
+|	'<='
 |	'>'
 |	'<'
 ;
 
 expressao
 :	termo_logico (op_logico_1 termo_logico)*
-; 
+;
 
 
 termo_logico
@@ -228,7 +228,7 @@ termo_logico
 
 fator_logico
 :	'nao'? parcela_logica
-; 
+;
 
 parcela_logica
 :	('verdadeiro'  | 'falso')
@@ -236,26 +236,26 @@ parcela_logica
 ;
 
 op_logico_1
-:	'ou' 
+:	'ou'
 ;
 
 op_logico_2
-:	'e' 
+:	'e'
 ;
 
-IDENT 
+IDENT
 :	[a-zA-Z_] [0-9a-zA-Z_]*
 ;
 
-CADEIA 
+CADEIA
 :	'"' .*? '"'
 ;
 
-NUM_INT 
+NUM_INT
 :	[0-9]+
 ;
 
-NUM_REAL 
+NUM_REAL
 :	NUM_INT '.' NUM_INT
 ;
 

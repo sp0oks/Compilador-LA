@@ -1,21 +1,17 @@
-// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/LA.g4 by ANTLR 4.7
+// Generated from LA.g4 by ANTLR 4.7.1
 package t1;
-
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.atn.ATN;
-import org.antlr.v4.runtime.atn.ATNDeserializer;
-import org.antlr.v4.runtime.atn.ParserATNSimulator;
-import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
-import org.antlr.v4.runtime.tree.ParseTreeListener;
-import org.antlr.v4.runtime.tree.ParseTreeVisitor;
-import org.antlr.v4.runtime.tree.TerminalNode;
-
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
+import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class LAParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.7", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.7.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -401,14 +397,17 @@ public class LAParser extends Parser {
 	}
 
 	public static class VariavelContext extends ParserRuleContext {
+		public IdentificadorContext id1;
+		public IdentificadorContext identificador;
+		public List<IdentificadorContext> id2 = new ArrayList<IdentificadorContext>();
+		public TipoContext tipo() {
+			return getRuleContext(TipoContext.class,0);
+		}
 		public List<IdentificadorContext> identificador() {
 			return getRuleContexts(IdentificadorContext.class);
 		}
 		public IdentificadorContext identificador(int i) {
 			return getRuleContext(IdentificadorContext.class,i);
-		}
-		public TipoContext tipo() {
-			return getRuleContext(TipoContext.class,0);
 		}
 		public VariavelContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -437,7 +436,7 @@ public class LAParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(130);
-			identificador();
+			((VariavelContext)_localctx).id1 = identificador();
 			setState(135);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -447,7 +446,8 @@ public class LAParser extends Parser {
 				setState(131);
 				match(T__7);
 				setState(132);
-				identificador();
+				((VariavelContext)_localctx).identificador = identificador();
+				((VariavelContext)_localctx).id2.add(((VariavelContext)_localctx).identificador);
 				}
 				}
 				setState(137);
