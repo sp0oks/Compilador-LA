@@ -20,8 +20,7 @@ public class LACompiler {
 
 		    parser.addErrorListener(new ErrorListener(sp));
 
-        arvore = parser.programa();
-
+            arvore = parser.programa();
         } catch (ParseCancellationException pce) {
                 if (pce.getMessage() != null) {
                     sp.println(pce.getMessage());
@@ -32,12 +31,11 @@ public class LACompiler {
             System.out.println("Erro: o arquivo passado no argumento não foi encontrado.");
         }
 
-      if(!sp.isModificado()){ //Só faz a análise semantica caso não tenho erra sintático
-        Visitor visitor = new Visitor(sp);
-        visitor.visitPrograma(arvore);
-      }
-
-        if (sp.isModificado()) {
+        //Só faz a análise semantica caso não tenho erro sintático
+        if(!sp.isModificado()){
+          AnalisadorSemantico as = new AnalisadorSemantico(sp);
+          as.visitPrograma(arvore);
+        } else {
             sp.print("Fim da compilacao");
             String out = sp.toString();
             try {
