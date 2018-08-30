@@ -11,7 +11,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   public AnalisadorSemantico(SaidaParser sp) { this.sp = sp; }
 
-  public enum tipoOperacao { ARITMETICA, RELACIONAL, LOGICA}
+  public enum tipoOperacao { ARITMETICA, RELACIONAL, LOGICA }
 
   public boolean isNumerico(String tipo) { return (tipo.equals("inteiro") || tipo.equals("real")); }
 
