@@ -3,10 +3,13 @@ package t1;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class AnalisadorSemantico extends LABaseVisitor<String> {
-  PilhaDeTabelas pdt;
+  PilhaDeTabelas escopos;
   SaidaParser sp;
+  HashMap<String, List<String>> tabelaParametros;
   ArrayList<String> tabelaDeSimbolos = new ArrayList<String>();
 
   public AnalisadorSemantico(SaidaParser sp) { this.sp = sp; }
@@ -37,6 +40,10 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   @Override
   public String visitPrograma(LAParser.ProgramaContext ctx) {
       /* programa: declaracoes 'algoritmo' corpo 'fim_algoritmo'; */
+      escopos = new PilhaDeTabelas();
+      tabelaParametros = new HashMap<>();
+      escopos.empilhar(new TabelaDeSimbolos("global"));
+
       visitDeclaracoes(ctx.declaracoes());
       visitCorpo(ctx.corpo());
       return null;
@@ -66,10 +73,8 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   }
 
   @Override
-  public String visitDeclaracao_local(LAParser.Declaracao_localContext ctx) {
-      /* declaracao_local: 'declare'  variavel
-                         | 'constante'  IDENT ':' tipo_basico '=' valor_constante
-                         | 'tipo'  IDENT ':' tipo */
+  public String visitDeclaracao_local_var(LAParser.Declaracao_local_varContext ctx) {
+      /* declaracao_local: 'declare'  variavel */
       if (!sp.isModificado()) {
           if(ctx.variavel() != null){
               visitVariavel(ctx.variavel());
@@ -91,9 +96,26 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   }
 
   @Override
-  public String visitDeclaracao_global(LAParser.Declaracao_globalContext ctx) {
-      /* decl_global : 'procedimento'  IDENT '(' parametros? ')' (declaracao_local)* (cmd)* 'fim_procedimento'
-                     | 'funcao' IDENT '(' parametros? ')' ':' tipo_estendido (declaracao_local)* (cmd)* 'fim_funcao' */
+  public String visitDeclaracao_local_const(LAParser.Declaracao_local_constContext ctx) {
+      /* declaracao_local: 'constante'  IDENT ':' tipo_basico '=' valor_constante */
+      return null;
+  }
+
+  @Override
+  public String visitDeclaracao_local_tipo(LAParser.Declaracao_local_tipoContext ctx) {
+      /* declaraçao_local: 'tipo'  IDENT ':' tipo */
+      return null;
+  }
+
+  @Override
+  public String visitDeclaracao_global_proc(LAParser.Declaracao_global_procContext ctx) {
+      /* decl_global: 'procedimento'  IDENT '(' parametros? ')' (declaracao_local)* (cmd)* 'fim_procedimento' */
+      return null;
+  }
+
+  @Override
+  public String visitDeclaracao_global_func(LAParser.Declaracao_global_funcContext ctx) {
+      /* decl_global : 'funcao' IDENT '(' parametros? ')' ':' tipo_estendido (declaracao_local)* (cmd)* 'fim_funcao' */
       return null;
   }
 
@@ -189,7 +211,66 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitFator(LAParser.FatorContext ctx){
+      /* fator: parcela (op3 parcela)? ; */
+      String p1 = null;
+      for(LAParser.ParcelaContext pcl : ctx.parcela()){
+          String p2 = visitParcela(pcl);
+          p1 = getTipoRetorno(tipoOperacao.ARITMETICA, p1, p2);
+      }
+      return p1;
+  }
+
+  @Override
+  public String visitParcela(LAParser.ParcelaContext ctx) {
+      /* parcela: op_unario? parcela_unario | parcela_nao_unario; */
+      if (ctx.parcela_unario() != null) {
+          String tp = visitParcela_unario(ctx.parcela_unario());
+          if (ctx.op_unario() != null && !isNumerico(tp)) {
+              return "tipo_indefinido";
+          }
+          return tp;
+      } else if (ctx.parcela_nao_unario() != null) {
+          return visitParcela_nao_unario(ctx.parcela_nao_unario());
+      }
       return null;
   }
 
+  @Override
+  public String visitParcela_unario(LAParser.Parcela_unarioContext ctx) {
+      /* parcela_unario: '^'? identificador
+                       | IDENT '(' expressao (','  expressao)* ')'
+                       | NUM_INT | NUM_REAL | '(' expressao ')'; */
+      if(ctx.identificador() != null) {
+          String id = ctx.identificador().getText();
+          String tid = visitIdentificador(ctx.identificador());
+
+          if (!escopos.existeSimbolo(id)) {
+              sp.println("Linha " + ctx.identificador().start.getLine() + ": identificador " + id + "nao declarado");
+          }
+          return tid;
+      } else if (ctx.IDENT() != null) {
+          String id = ctx.IDENT().getText();
+          String texp = null, retorno = null;
+          List<String> params = tabelaParametros.get(id);
+          boolean incomp = false;
+
+          if (!escopos.existeSimbolo(id)) {
+              sp.println("Linha " + ctx.identificador().start.getLine() + ": identificador " + id + "nao declarado");
+          }
+          for (int i = 1; i < ctx.expressao().size(); i++) {
+              texp = visitExpressao(ctx.expressao(i));
+              incomp = params.get(i).equals(texp);
+          }
+          incomp = incomp && !params.isEmpty() && params.size() == ctx.expressao().size() + 1;
+          if (incomp) {
+              sp.println("Linha " + ctx.start.getLine() + ": incompatibilidade de parametros na chamada de " + id);
+          }
+          return params.get(0);
+      } else return null;
+  }
+
+  @Override
+  public String visitParcela_nao_unario(LAParser.Parcela_nao_unarioContext ctx) {
+    return null;
+  }
 }

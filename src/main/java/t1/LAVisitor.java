@@ -1,4 +1,4 @@
-// Generated from LA.g4 by ANTLR 4.7.1
+// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/LA.g4 by ANTLR 4.7
 package t1;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -29,11 +29,26 @@ public interface LAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDecl_local_global(LAParser.Decl_local_globalContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#declaracao_local}.
+	 * Visit a parse tree produced by the {@code declaracao_local_var}
+	 * labeled alternative in {@link LAParser#declaracao_local}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDeclaracao_local(LAParser.Declaracao_localContext ctx);
+	T visitDeclaracao_local_var(LAParser.Declaracao_local_varContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code declaracao_local_const}
+	 * labeled alternative in {@link LAParser#declaracao_local}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeclaracao_local_const(LAParser.Declaracao_local_constContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code declaracao_local_tipo}
+	 * labeled alternative in {@link LAParser#declaracao_local}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeclaracao_local_tipo(LAParser.Declaracao_local_tipoContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LAParser#variavel}.
 	 * @param ctx the parse tree
@@ -89,11 +104,19 @@ public interface LAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRegistro(LAParser.RegistroContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#declaracao_global}.
+	 * Visit a parse tree produced by the {@code declaracao_global_proc}
+	 * labeled alternative in {@link LAParser#declaracao_global}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDeclaracao_global(LAParser.Declaracao_globalContext ctx);
+	T visitDeclaracao_global_proc(LAParser.Declaracao_global_procContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code declaracao_global_func}
+	 * labeled alternative in {@link LAParser#declaracao_global}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeclaracao_global_func(LAParser.Declaracao_global_funcContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LAParser#parametro}.
 	 * @param ctx the parse tree

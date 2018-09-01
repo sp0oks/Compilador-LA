@@ -1,4 +1,4 @@
-// Generated from LA.g4 by ANTLR 4.7.1
+// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/LA.g4 by ANTLR 4.7
 package t1;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -52,13 +52,37 @@ public class LABaseListener implements LAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDeclaracao_local(LAParser.Declaracao_localContext ctx) { }
+	@Override public void enterDeclaracao_local_var(LAParser.Declaracao_local_varContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDeclaracao_local(LAParser.Declaracao_localContext ctx) { }
+	@Override public void exitDeclaracao_local_var(LAParser.Declaracao_local_varContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDeclaracao_local_const(LAParser.Declaracao_local_constContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDeclaracao_local_const(LAParser.Declaracao_local_constContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDeclaracao_local_tipo(LAParser.Declaracao_local_tipoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDeclaracao_local_tipo(LAParser.Declaracao_local_tipoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -172,13 +196,25 @@ public class LABaseListener implements LAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDeclaracao_global(LAParser.Declaracao_globalContext ctx) { }
+	@Override public void enterDeclaracao_global_proc(LAParser.Declaracao_global_procContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDeclaracao_global(LAParser.Declaracao_globalContext ctx) { }
+	@Override public void exitDeclaracao_global_proc(LAParser.Declaracao_global_procContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDeclaracao_global_func(LAParser.Declaracao_global_funcContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDeclaracao_global_func(LAParser.Declaracao_global_funcContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

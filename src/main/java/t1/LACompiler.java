@@ -30,7 +30,6 @@ public class LACompiler {
         } catch (FileNotFoundException fnfe) {
             System.out.println("Erro: o arquivo passado no argumento não foi encontrado.");
         }
-
         //Só faz a análise semantica caso não tenho erro sintático
         if(!sp.isModificado()){
           AnalisadorSemantico as = new AnalisadorSemantico(sp);

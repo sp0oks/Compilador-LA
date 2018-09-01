@@ -18,9 +18,9 @@ decl_local_global
 ;
 
 declaracao_local
-:	'declare'  variavel
-|	'constante'  IDENT ':' tipo_basico '=' valor_constante
-|	'tipo'  IDENT ':' tipo
+:	'declare'  variavel # declaracao_local_var
+|	'constante'  IDENT ':' tipo_basico '=' valor_constante # declaracao_local_const
+|	'tipo'  IDENT ':' tipo # declaracao_local_tipo
 ;
 
 variavel
@@ -69,8 +69,8 @@ registro
 ;
 
 declaracao_global
-:	'procedimento'  IDENT '(' parametros? ')' (declaracao_local)* (cmd)* 'fim_procedimento'
-|   'funcao' IDENT '(' parametros? ')' ':' tipo_estendido (declaracao_local)* (cmd)* 'fim_funcao'
+:	'procedimento'  IDENT '(' parametros? ')' (declaracao_local)* (cmd)* 'fim_procedimento' # declaracao_global_proc
+|   'funcao' IDENT '(' parametros? ')' ':' tipo_estendido (declaracao_local)* (cmd)* 'fim_funcao' # declaracao_global_func
 ;
 
 parametro
