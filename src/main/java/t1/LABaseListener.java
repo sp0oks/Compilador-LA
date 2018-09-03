@@ -1,4 +1,4 @@
-// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/LA.g4 by ANTLR 4.7
+// Generated from C:/Users/Gabriel/IdeaProjects/Compilador-LA/src/main/java\LA.g4 by ANTLR 4.7
 package t1;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -136,18 +136,6 @@ public class LABaseListener implements LAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTipo_basico(LAParser.Tipo_basicoContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitTipo_basico(LAParser.Tipo_basicoContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterTipo_basico_ident(LAParser.Tipo_basico_identContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -251,18 +239,6 @@ public class LABaseListener implements LAListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCorpo(LAParser.CorpoContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCmd(LAParser.CmdContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCmd(LAParser.CmdContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -436,18 +412,6 @@ public class LABaseListener implements LAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOp_unario(LAParser.Op_unarioContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitOp_unario(LAParser.Op_unarioContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterExp_aritmetica(LAParser.Exp_aritmeticaContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -484,42 +448,6 @@ public class LABaseListener implements LAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOp1(LAParser.Op1Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitOp1(LAParser.Op1Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterOp2(LAParser.Op2Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitOp2(LAParser.Op2Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterOp3(LAParser.Op3Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitOp3(LAParser.Op3Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterParcela(LAParser.ParcelaContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -532,25 +460,85 @@ public class LABaseListener implements LAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParcela_unario(LAParser.Parcela_unarioContext ctx) { }
+	@Override public void enterParcela_unario_id(LAParser.Parcela_unario_idContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParcela_unario(LAParser.Parcela_unarioContext ctx) { }
+	@Override public void exitParcela_unario_id(LAParser.Parcela_unario_idContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParcela_nao_unario(LAParser.Parcela_nao_unarioContext ctx) { }
+	@Override public void enterParcela_unario_expr(LAParser.Parcela_unario_exprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParcela_nao_unario(LAParser.Parcela_nao_unarioContext ctx) { }
+	@Override public void exitParcela_unario_expr(LAParser.Parcela_unario_exprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParcela_unario_func(LAParser.Parcela_unario_funcContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParcela_unario_func(LAParser.Parcela_unario_funcContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParcela_unario_atom_int(LAParser.Parcela_unario_atom_intContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParcela_unario_atom_int(LAParser.Parcela_unario_atom_intContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParcela_unario_atom_real(LAParser.Parcela_unario_atom_realContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParcela_unario_atom_real(LAParser.Parcela_unario_atom_realContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParcela_nao_unario_id(LAParser.Parcela_nao_unario_idContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParcela_nao_unario_id(LAParser.Parcela_nao_unario_idContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParcela_nao_unario_cad(LAParser.Parcela_nao_unario_cadContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParcela_nao_unario_cad(LAParser.Parcela_nao_unario_cadContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -563,18 +551,6 @@ public class LABaseListener implements LAListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExp_relacional(LAParser.Exp_relacionalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterOp_relacional(LAParser.Op_relacionalContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitOp_relacional(LAParser.Op_relacionalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -616,37 +592,25 @@ public class LABaseListener implements LAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParcela_logica(LAParser.Parcela_logicaContext ctx) { }
+	@Override public void enterParcela_logica_atom(LAParser.Parcela_logica_atomContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParcela_logica(LAParser.Parcela_logicaContext ctx) { }
+	@Override public void exitParcela_logica_atom(LAParser.Parcela_logica_atomContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOp_logico_1(LAParser.Op_logico_1Context ctx) { }
+	@Override public void enterParcela_logica_expr(LAParser.Parcela_logica_exprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOp_logico_1(LAParser.Op_logico_1Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterOp_logico_2(LAParser.Op_logico_2Context ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitOp_logico_2(LAParser.Op_logico_2Context ctx) { }
+	@Override public void exitParcela_logica_expr(LAParser.Parcela_logica_exprContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

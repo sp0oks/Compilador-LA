@@ -1,4 +1,4 @@
-// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/LA.g4 by ANTLR 4.7
+// Generated from C:/Users/Gabriel/IdeaProjects/Compilador-LA/src/main/java\LA.g4 by ANTLR 4.7
 package t1;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -114,16 +114,6 @@ public interface LAListener extends ParseTreeListener {
 	 */
 	void exitTipo(LAParser.TipoContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#tipo_basico}.
-	 * @param ctx the parse tree
-	 */
-	void enterTipo_basico(LAParser.Tipo_basicoContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LAParser#tipo_basico}.
-	 * @param ctx the parse tree
-	 */
-	void exitTipo_basico(LAParser.Tipo_basicoContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link LAParser#tipo_basico_ident}.
 	 * @param ctx the parse tree
 	 */
@@ -218,112 +208,122 @@ public interface LAListener extends ParseTreeListener {
 	 */
 	void exitCorpo(LAParser.CorpoContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#cmd}.
-	 * @param ctx the parse tree
-	 */
-	void enterCmd(LAParser.CmdContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LAParser#cmd}.
-	 * @param ctx the parse tree
-	 */
-	void exitCmd(LAParser.CmdContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link LAParser#cmdLeia}.
+	 * Enter a parse tree produced by the {@code cmdLeia}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void enterCmdLeia(LAParser.CmdLeiaContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#cmdLeia}.
+	 * Exit a parse tree produced by the {@code cmdLeia}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void exitCmdLeia(LAParser.CmdLeiaContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#cmdEscreva}.
+	 * Enter a parse tree produced by the {@code cmdEscreva}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void enterCmdEscreva(LAParser.CmdEscrevaContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#cmdEscreva}.
+	 * Exit a parse tree produced by the {@code cmdEscreva}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void exitCmdEscreva(LAParser.CmdEscrevaContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#cmdSe}.
+	 * Enter a parse tree produced by the {@code cmdSe}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void enterCmdSe(LAParser.CmdSeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#cmdSe}.
+	 * Exit a parse tree produced by the {@code cmdSe}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void exitCmdSe(LAParser.CmdSeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#cmdCaso}.
+	 * Enter a parse tree produced by the {@code cmdCaso}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void enterCmdCaso(LAParser.CmdCasoContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#cmdCaso}.
+	 * Exit a parse tree produced by the {@code cmdCaso}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void exitCmdCaso(LAParser.CmdCasoContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#cmdPara}.
+	 * Enter a parse tree produced by the {@code cmdPara}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void enterCmdPara(LAParser.CmdParaContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#cmdPara}.
+	 * Exit a parse tree produced by the {@code cmdPara}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void exitCmdPara(LAParser.CmdParaContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#cmdEnquanto}.
+	 * Enter a parse tree produced by the {@code cmdEnquanto}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void enterCmdEnquanto(LAParser.CmdEnquantoContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#cmdEnquanto}.
+	 * Exit a parse tree produced by the {@code cmdEnquanto}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void exitCmdEnquanto(LAParser.CmdEnquantoContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#cmdFaca}.
+	 * Enter a parse tree produced by the {@code cmdFaca}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void enterCmdFaca(LAParser.CmdFacaContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#cmdFaca}.
+	 * Exit a parse tree produced by the {@code cmdFaca}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void exitCmdFaca(LAParser.CmdFacaContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#cmdAtribuicao}.
+	 * Enter a parse tree produced by the {@code cmdAtribuicao}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void enterCmdAtribuicao(LAParser.CmdAtribuicaoContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#cmdAtribuicao}.
+	 * Exit a parse tree produced by the {@code cmdAtribuicao}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void exitCmdAtribuicao(LAParser.CmdAtribuicaoContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#cmdChamada}.
+	 * Enter a parse tree produced by the {@code cmdChamada}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void enterCmdChamada(LAParser.CmdChamadaContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#cmdChamada}.
+	 * Exit a parse tree produced by the {@code cmdChamada}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void exitCmdChamada(LAParser.CmdChamadaContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#cmdRetorne}.
+	 * Enter a parse tree produced by the {@code cmdRetorne}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void enterCmdRetorne(LAParser.CmdRetorneContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#cmdRetorne}.
+	 * Exit a parse tree produced by the {@code cmdRetorne}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 */
 	void exitCmdRetorne(LAParser.CmdRetorneContext ctx);
@@ -368,16 +368,6 @@ public interface LAListener extends ParseTreeListener {
 	 */
 	void exitNumero_intervalo(LAParser.Numero_intervaloContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#op_unario}.
-	 * @param ctx the parse tree
-	 */
-	void enterOp_unario(LAParser.Op_unarioContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LAParser#op_unario}.
-	 * @param ctx the parse tree
-	 */
-	void exitOp_unario(LAParser.Op_unarioContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link LAParser#exp_aritmetica}.
 	 * @param ctx the parse tree
 	 */
@@ -408,36 +398,6 @@ public interface LAListener extends ParseTreeListener {
 	 */
 	void exitFator(LAParser.FatorContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#op1}.
-	 * @param ctx the parse tree
-	 */
-	void enterOp1(LAParser.Op1Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link LAParser#op1}.
-	 * @param ctx the parse tree
-	 */
-	void exitOp1(LAParser.Op1Context ctx);
-	/**
-	 * Enter a parse tree produced by {@link LAParser#op2}.
-	 * @param ctx the parse tree
-	 */
-	void enterOp2(LAParser.Op2Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link LAParser#op2}.
-	 * @param ctx the parse tree
-	 */
-	void exitOp2(LAParser.Op2Context ctx);
-	/**
-	 * Enter a parse tree produced by {@link LAParser#op3}.
-	 * @param ctx the parse tree
-	 */
-	void enterOp3(LAParser.Op3Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link LAParser#op3}.
-	 * @param ctx the parse tree
-	 */
-	void exitOp3(LAParser.Op3Context ctx);
-	/**
 	 * Enter a parse tree produced by {@link LAParser#parcela}.
 	 * @param ctx the parse tree
 	 */
@@ -448,25 +408,89 @@ public interface LAListener extends ParseTreeListener {
 	 */
 	void exitParcela(LAParser.ParcelaContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#parcela_unario}.
+	 * Enter a parse tree produced by the {@code parcela_unario_id}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
 	 * @param ctx the parse tree
 	 */
-	void enterParcela_unario(LAParser.Parcela_unarioContext ctx);
+	void enterParcela_unario_id(LAParser.Parcela_unario_idContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#parcela_unario}.
+	 * Exit a parse tree produced by the {@code parcela_unario_id}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
 	 * @param ctx the parse tree
 	 */
-	void exitParcela_unario(LAParser.Parcela_unarioContext ctx);
+	void exitParcela_unario_id(LAParser.Parcela_unario_idContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#parcela_nao_unario}.
+	 * Enter a parse tree produced by the {@code parcela_unario_expr}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
 	 * @param ctx the parse tree
 	 */
-	void enterParcela_nao_unario(LAParser.Parcela_nao_unarioContext ctx);
+	void enterParcela_unario_expr(LAParser.Parcela_unario_exprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#parcela_nao_unario}.
+	 * Exit a parse tree produced by the {@code parcela_unario_expr}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
 	 * @param ctx the parse tree
 	 */
-	void exitParcela_nao_unario(LAParser.Parcela_nao_unarioContext ctx);
+	void exitParcela_unario_expr(LAParser.Parcela_unario_exprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code parcela_unario_func}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
+	 * @param ctx the parse tree
+	 */
+	void enterParcela_unario_func(LAParser.Parcela_unario_funcContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code parcela_unario_func}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
+	 * @param ctx the parse tree
+	 */
+	void exitParcela_unario_func(LAParser.Parcela_unario_funcContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code parcela_unario_atom_int}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
+	 * @param ctx the parse tree
+	 */
+	void enterParcela_unario_atom_int(LAParser.Parcela_unario_atom_intContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code parcela_unario_atom_int}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
+	 * @param ctx the parse tree
+	 */
+	void exitParcela_unario_atom_int(LAParser.Parcela_unario_atom_intContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code parcela_unario_atom_real}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
+	 * @param ctx the parse tree
+	 */
+	void enterParcela_unario_atom_real(LAParser.Parcela_unario_atom_realContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code parcela_unario_atom_real}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
+	 * @param ctx the parse tree
+	 */
+	void exitParcela_unario_atom_real(LAParser.Parcela_unario_atom_realContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code parcela_nao_unario_id}
+	 * labeled alternative in {@link LAParser#parcela_nao_unario}.
+	 * @param ctx the parse tree
+	 */
+	void enterParcela_nao_unario_id(LAParser.Parcela_nao_unario_idContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code parcela_nao_unario_id}
+	 * labeled alternative in {@link LAParser#parcela_nao_unario}.
+	 * @param ctx the parse tree
+	 */
+	void exitParcela_nao_unario_id(LAParser.Parcela_nao_unario_idContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code parcela_nao_unario_cad}
+	 * labeled alternative in {@link LAParser#parcela_nao_unario}.
+	 * @param ctx the parse tree
+	 */
+	void enterParcela_nao_unario_cad(LAParser.Parcela_nao_unario_cadContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code parcela_nao_unario_cad}
+	 * labeled alternative in {@link LAParser#parcela_nao_unario}.
+	 * @param ctx the parse tree
+	 */
+	void exitParcela_nao_unario_cad(LAParser.Parcela_nao_unario_cadContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LAParser#exp_relacional}.
 	 * @param ctx the parse tree
@@ -477,16 +501,6 @@ public interface LAListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExp_relacional(LAParser.Exp_relacionalContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link LAParser#op_relacional}.
-	 * @param ctx the parse tree
-	 */
-	void enterOp_relacional(LAParser.Op_relacionalContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LAParser#op_relacional}.
-	 * @param ctx the parse tree
-	 */
-	void exitOp_relacional(LAParser.Op_relacionalContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LAParser#expressao}.
 	 * @param ctx the parse tree
@@ -518,33 +532,27 @@ public interface LAListener extends ParseTreeListener {
 	 */
 	void exitFator_logico(LAParser.Fator_logicoContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#parcela_logica}.
+	 * Enter a parse tree produced by the {@code parcela_logica_atom}
+	 * labeled alternative in {@link LAParser#parcela_logica}.
 	 * @param ctx the parse tree
 	 */
-	void enterParcela_logica(LAParser.Parcela_logicaContext ctx);
+	void enterParcela_logica_atom(LAParser.Parcela_logica_atomContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#parcela_logica}.
+	 * Exit a parse tree produced by the {@code parcela_logica_atom}
+	 * labeled alternative in {@link LAParser#parcela_logica}.
 	 * @param ctx the parse tree
 	 */
-	void exitParcela_logica(LAParser.Parcela_logicaContext ctx);
+	void exitParcela_logica_atom(LAParser.Parcela_logica_atomContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#op_logico_1}.
+	 * Enter a parse tree produced by the {@code parcela_logica_expr}
+	 * labeled alternative in {@link LAParser#parcela_logica}.
 	 * @param ctx the parse tree
 	 */
-	void enterOp_logico_1(LAParser.Op_logico_1Context ctx);
+	void enterParcela_logica_expr(LAParser.Parcela_logica_exprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#op_logico_1}.
+	 * Exit a parse tree produced by the {@code parcela_logica_expr}
+	 * labeled alternative in {@link LAParser#parcela_logica}.
 	 * @param ctx the parse tree
 	 */
-	void exitOp_logico_1(LAParser.Op_logico_1Context ctx);
-	/**
-	 * Enter a parse tree produced by {@link LAParser#op_logico_2}.
-	 * @param ctx the parse tree
-	 */
-	void enterOp_logico_2(LAParser.Op_logico_2Context ctx);
-	/**
-	 * Exit a parse tree produced by {@link LAParser#op_logico_2}.
-	 * @param ctx the parse tree
-	 */
-	void exitOp_logico_2(LAParser.Op_logico_2Context ctx);
+	void exitParcela_logica_expr(LAParser.Parcela_logica_exprContext ctx);
 }

@@ -1,4 +1,4 @@
-// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/LA.g4 by ANTLR 4.7
+// Generated from C:/Users/Gabriel/IdeaProjects/Compilador-LA/src/main/java\LA.g4 by ANTLR 4.7
 package t1;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -74,12 +74,6 @@ public interface LAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTipo(LAParser.TipoContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#tipo_basico}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTipo_basico(LAParser.Tipo_basicoContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link LAParser#tipo_basico_ident}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -136,67 +130,71 @@ public interface LAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCorpo(LAParser.CorpoContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#cmd}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCmd(LAParser.CmdContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LAParser#cmdLeia}.
+	 * Visit a parse tree produced by the {@code cmdLeia}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCmdLeia(LAParser.CmdLeiaContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#cmdEscreva}.
+	 * Visit a parse tree produced by the {@code cmdEscreva}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCmdEscreva(LAParser.CmdEscrevaContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#cmdSe}.
+	 * Visit a parse tree produced by the {@code cmdSe}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCmdSe(LAParser.CmdSeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#cmdCaso}.
+	 * Visit a parse tree produced by the {@code cmdCaso}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCmdCaso(LAParser.CmdCasoContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#cmdPara}.
+	 * Visit a parse tree produced by the {@code cmdPara}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCmdPara(LAParser.CmdParaContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#cmdEnquanto}.
+	 * Visit a parse tree produced by the {@code cmdEnquanto}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCmdEnquanto(LAParser.CmdEnquantoContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#cmdFaca}.
+	 * Visit a parse tree produced by the {@code cmdFaca}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCmdFaca(LAParser.CmdFacaContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#cmdAtribuicao}.
+	 * Visit a parse tree produced by the {@code cmdAtribuicao}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCmdAtribuicao(LAParser.CmdAtribuicaoContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#cmdChamada}.
+	 * Visit a parse tree produced by the {@code cmdChamada}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCmdChamada(LAParser.CmdChamadaContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#cmdRetorne}.
+	 * Visit a parse tree produced by the {@code cmdRetorne}
+	 * labeled alternative in {@link LAParser#cmd}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
@@ -226,12 +224,6 @@ public interface LAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumero_intervalo(LAParser.Numero_intervaloContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#op_unario}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOp_unario(LAParser.Op_unarioContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link LAParser#exp_aritmetica}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -250,53 +242,66 @@ public interface LAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFator(LAParser.FatorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#op1}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOp1(LAParser.Op1Context ctx);
-	/**
-	 * Visit a parse tree produced by {@link LAParser#op2}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOp2(LAParser.Op2Context ctx);
-	/**
-	 * Visit a parse tree produced by {@link LAParser#op3}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOp3(LAParser.Op3Context ctx);
-	/**
 	 * Visit a parse tree produced by {@link LAParser#parcela}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitParcela(LAParser.ParcelaContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#parcela_unario}.
+	 * Visit a parse tree produced by the {@code parcela_unario_id}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParcela_unario(LAParser.Parcela_unarioContext ctx);
+	T visitParcela_unario_id(LAParser.Parcela_unario_idContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#parcela_nao_unario}.
+	 * Visit a parse tree produced by the {@code parcela_unario_expr}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParcela_nao_unario(LAParser.Parcela_nao_unarioContext ctx);
+	T visitParcela_unario_expr(LAParser.Parcela_unario_exprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parcela_unario_func}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParcela_unario_func(LAParser.Parcela_unario_funcContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parcela_unario_atom_int}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParcela_unario_atom_int(LAParser.Parcela_unario_atom_intContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parcela_unario_atom_real}
+	 * labeled alternative in {@link LAParser#parcela_unario}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParcela_unario_atom_real(LAParser.Parcela_unario_atom_realContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parcela_nao_unario_id}
+	 * labeled alternative in {@link LAParser#parcela_nao_unario}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParcela_nao_unario_id(LAParser.Parcela_nao_unario_idContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parcela_nao_unario_cad}
+	 * labeled alternative in {@link LAParser#parcela_nao_unario}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParcela_nao_unario_cad(LAParser.Parcela_nao_unario_cadContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LAParser#exp_relacional}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitExp_relacional(LAParser.Exp_relacionalContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LAParser#op_relacional}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOp_relacional(LAParser.Op_relacionalContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LAParser#expressao}.
 	 * @param ctx the parse tree
@@ -316,21 +321,17 @@ public interface LAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFator_logico(LAParser.Fator_logicoContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#parcela_logica}.
+	 * Visit a parse tree produced by the {@code parcela_logica_atom}
+	 * labeled alternative in {@link LAParser#parcela_logica}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParcela_logica(LAParser.Parcela_logicaContext ctx);
+	T visitParcela_logica_atom(LAParser.Parcela_logica_atomContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#op_logico_1}.
+	 * Visit a parse tree produced by the {@code parcela_logica_expr}
+	 * labeled alternative in {@link LAParser#parcela_logica}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOp_logico_1(LAParser.Op_logico_1Context ctx);
-	/**
-	 * Visit a parse tree produced by {@link LAParser#op_logico_2}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOp_logico_2(LAParser.Op_logico_2Context ctx);
+	T visitParcela_logica_expr(LAParser.Parcela_logica_exprContext ctx);
 }
