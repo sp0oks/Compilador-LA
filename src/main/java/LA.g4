@@ -144,7 +144,6 @@ expressao
 :	termo_logico (OP_LOGICO_1 termo_logico)*
 ;
 
-
 termo_logico
 :	fator_logico (OP_LOGICO_2 fator_logico)*
 ;
