@@ -19,6 +19,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   public boolean isNumerico(String tipo) { return (tipo.equals("inteiro") || tipo.equals("real")); }
 
   public String getTipoRetorno(LAEnums.tipoOperacao op, String t1, String t2) {
+      if(t1 == null) return t2;
       switch (op) {
           case ARITMETICA:
               if (isNumerico(t1) && isNumerico(t2)) {
@@ -71,6 +72,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
                 }
             }
       }
+
       return null;
   }
 
@@ -102,18 +104,38 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   @Override
   public String visitDeclaracao_global_proc(LAParser.Declaracao_global_procContext ctx) {
       /* decl_global: 'procedimento'  IDENT '(' parametros? ')' (declaracao_local)* (cmd)* 'fim_procedimento' */
+      escopos.empilhar(new TabelaDeSimbolos("procedimento"));
+      // Visitar parametros, declaracao_local e cmd
+      visitChildren(ctx);
+      escopos.desempilhar();
       return null;
   }
 
   @Override
   public String visitDeclaracao_global_func(LAParser.Declaracao_global_funcContext ctx) {
       /* decl_global : 'funcao' IDENT '(' parametros? ')' ':' tipo_estendido (declaracao_local)* (cmd)* 'fim_funcao' */
+      escopos.empilhar(new TabelaDeSimbolos("funcao"));
+      // Visitar parametros, declaracao_local e cmd
+      visitChildren(ctx);
+      escopos.desempilhar();
       return null;
+  }
+
+  @Override
+  public String visitCmdRetorne(LAParser.CmdRetorneContext ctx) {
+    if(!escopos.topo().getNome().equals("funcao")){
+      sp.println("Linha " + ctx.start.getLine() + ": comando retorne nao permitido nesse escopo");
+    }
+    return null;
   }
 
   @Override
   public String visitVariavel(LAParser.VariavelContext ctx) {
       /* variavel: id1=identificador (',' id2+=identificador)* ':' tipo; */
+      String tipo = ctx.tipo().getText();
+      if(tabelaDeTipos.indexOf(tipo) == -1) {
+        sp.println("Linha " + ctx.start.getLine() + ": tipo " + tipo + " nao declarado");
+      }
       return null;
   }
 
@@ -127,10 +149,16 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   @Override
   public String visitIdentificador(LAParser.IdentificadorContext ctx) {
       /* identificador: IDENT ('.'  IDENT)* dimensao; */
-      String ident = "";
-      for(TerminalNode id : ctx.IDENT()){ ident += "." + id.getText(); }
+      String nome = ctx.IDENT().get(0).getText();
+      for(int i = 1; i < ctx.IDENT().size(); i++) nome += "." + ctx.IDENT().get(i).getText();
+      if(!escopos.topo().existeSimbolo(nome)) {
+          sp.println("Linha " + ctx.start.getLine() + ": identificador " + ctx.IDENT().get(0).getText() + " nao declarado");
+      }
+      // Não é necessário:
+      // String ident = "";
+      // for(TerminalNode id : ctx.IDENT()){ ident += "." + id.getText(); }
       if (ctx.dimensao() != null) { visitDimensao(ctx.dimensao()); }
-      return ident;
+      return escopos.getTipoSimbolo(nome);
   }
 
   @Override
@@ -197,11 +225,25 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   }
 
   @Override
+  public String visitParcela_unario_atom_int (LAParser.Parcela_unario_atom_intContext ctx) {
+      return "inteiro";
+  }
+
+  @Override
+  public String visitParcela_unario_atom_real (LAParser.Parcela_unario_atom_realContext ctx) {
+      return "real";
+  }
+
+  @Override
+  public String visitParcela_nao_unario_id (LAParser.Parcela_nao_unario_idContext ctx) {
+    return null;
+  }
+  /*
+  @Override
   public String visitExpressao (LAParser.ExpressaoContext ctx) {
-      /* termo_logico ('ou' termo_logico)* */
+      // termo_logico ('ou' termo_logico)*
       if (ctx.termo_logico != null) {
           String tlogico = null;
-
           for (LAParser.Termo_logicoContext t : ctx.termo_logico()){
               tlogico = visitTermo_logico(t);
               tlogico = getTipoRetorno(LAEnums.tipoOperacao.LOGICA, t1, t2);
@@ -209,75 +251,14 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
           return tlogico;
       }
   }
-
   @Override
   public String visitParcela_unario_expr (LAParser.Parcela_unario_exprContext ctx) {
-      /* '(' expressao ')'; */
+      // '(' expressao ')';
+      return null;
       if(ctx.expressao() != null){
           String exp = ctx.expressao().getText();
           String texp = visitExpressao(ctx.expressao());
-
           return texp;
       }
-  }
-
-  @Override
-  public String visitParcela_unario_func (LAParser.Parcela_unario_funcContext ctx) {
-      /* parcela_unario_func:  IDENT '(' expressao (','  expressao)* ')' */
-      if (ctx.IDENT() != null) {
-          String id = ctx.IDENT().getText();
-          String texp;
-          List<String> params = tabelaDeParametros.get(id);
-          String tpRetorno = params.get(0);
-          boolean incompat = false;
-
-          if (!escopos.existeSimbolo(id)) {
-              sp.println("Linha " + ctx.start.getLine() + ": identificador " + id + "nao declarado");
-          }
-          for (int i = 1; i < ctx.expressao().size(); i++) {
-              texp = visitExpressao(ctx.expressao(i));
-              incompat = params.get(i).equals(texp);
-          }
-          incompat = incompat && !params.isEmpty() && params.size() == ctx.expressao().size() + 1;
-          if (incompat) {
-              sp.println("Linha " + ctx.start.getLine() + ": incompatibilidade de parametros na chamada de " + id);
-          }
-          return tpRetorno;
-      }
-      return null;
-  }
-
-  @Override
-  public String visitParcela_unario_atom_int (LAParser.Parcela_unario_atom_intContext ctx) { return "inteiro"; }
-        /* declaraçao_local: */
-
-  @Override
-  public String visitParcela_unario_atom_real (LAParser.Parcela_unario_atom_realContext ctx) { return "real"; }
-
-  @Override
-  public String visitParcela_nao_unario_id (LAParser.Parcela_nao_unario_idContext ctx) {
-      return null;
-  }
-
-  @Override
-  public String visitVariavel(LAParser.Variavel_tipoContext ctx) {
-      /* declaraçao_local: id1=identificador (',' id2+=identificador)* ':' tipo */
-      if(ctx.variavel != null){
-          visitIdentficador(ctx.id1);
-          for (LAParser.Idenificador_Context id : ctx.variavel() id2) {
-              if(escopos.topo().existeSimbolo(id.getText())){
-                  sp.println("Linha " + id.start.getLine() + ": identificador " + id.getText() + " ja declarado anteriormente");
-              } else {
-                  escopos.topo().adicionarSimbolo(id.getText(), tipo, LAEnums.tipoSimbolo.VARIAVEL);
-                  visitIdentificador(ctx.id);
-              }
-          }
-      }
-      return null;
-  }
-
-  @Override
-    public String
+  }*/
 }
-
-
