@@ -1,4 +1,4 @@
-// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/LA.g4 by ANTLR 4.7
+// Generated from LA.g4 by ANTLR 4.7.1
 package t1;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 

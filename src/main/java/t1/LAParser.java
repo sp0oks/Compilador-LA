@@ -1,4 +1,4 @@
-// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/LA.g4 by ANTLR 4.7
+// Generated from LA.g4 by ANTLR 4.7.1
 package t1;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class LAParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.7", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.7.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -1420,14 +1420,11 @@ public class LAParser extends Parser {
 		}
 	}
 	public static class CmdLeiaContext extends CmdContext {
-		public IdentificadorContext identificador() {
-			return getRuleContext(IdentificadorContext.class,0);
+		public List<IdentificadorContext> identificador() {
+			return getRuleContexts(IdentificadorContext.class);
 		}
-		public List<ExpressaoContext> expressao() {
-			return getRuleContexts(ExpressaoContext.class);
-		}
-		public ExpressaoContext expressao(int i) {
-			return getRuleContext(ExpressaoContext.class,i);
+		public IdentificadorContext identificador(int i) {
+			return getRuleContext(IdentificadorContext.class,i);
 		}
 		public CmdLeiaContext(CmdContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1655,7 +1652,7 @@ public class LAParser extends Parser {
 					setState(240);
 					match(T__7);
 					setState(241);
-					expressao();
+					identificador();
 					}
 					}
 					setState(246);
@@ -3480,8 +3477,8 @@ public class LAParser extends Parser {
 		"\2\2\2\u00e8\u00eb\3\2\2\2\u00e9\u00e7\3\2\2\2\u00e9\u00ea\3\2\2\2\u00ea"+
 		"!\3\2\2\2\u00eb\u00e9\3\2\2\2\u00ec\u00ed\7\32\2\2\u00ed\u00ef\7\24\2"+
 		"\2\u00ee\u00f0\7\16\2\2\u00ef\u00ee\3\2\2\2\u00ef\u00f0\3\2\2\2\u00f0"+
-		"\u00f1\3\2\2\2\u00f1\u00f6\5\f\7\2\u00f2\u00f3\7\n\2\2\u00f3\u00f5\5:"+
-		"\36\2\u00f4\u00f2\3\2\2\2\u00f5\u00f8\3\2\2\2\u00f6\u00f4\3\2\2\2\u00f6"+
+		"\u00f1\3\2\2\2\u00f1\u00f6\5\f\7\2\u00f2\u00f3\7\n\2\2\u00f3\u00f5\5\f"+
+		"\7\2\u00f4\u00f2\3\2\2\2\u00f5\u00f8\3\2\2\2\u00f6\u00f4\3\2\2\2\u00f6"+
 		"\u00f7\3\2\2\2\u00f7\u00f9\3\2\2\2\u00f8\u00f6\3\2\2\2\u00f9\u00fa\7\25"+
 		"\2\2\u00fa\u0160\3\2\2\2\u00fb\u00fc\7\33\2\2\u00fc\u00fd\7\24\2\2\u00fd"+
 		"\u0102\5:\36\2\u00fe\u00ff\7\n\2\2\u00ff\u0101\5:\36\2\u0100\u00fe\3\2"+
