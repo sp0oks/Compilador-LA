@@ -11,17 +11,17 @@ public class TabelaDeSimbolos {
         simbolos = new ArrayList<>();
         this.escopo = escopo;
     }
-    
+
     public void adicionarSimbolo(String nome, String tipo, LAEnums.tipoSimbolo simbolo) {
         simbolos.add(new EntradaTabelaDeSimbolos(nome,tipo, simbolo));
     }
-    
+
     public void adicionarSimbolos(List<String> nomes, String tipo, LAEnums.tipoSimbolo simbolo) {
         for(String s:nomes) {
             simbolos.add(new EntradaTabelaDeSimbolos(s, tipo, simbolo));
         }
     }
-    
+
     public boolean existeSimbolo(String nome) {
         for(EntradaTabelaDeSimbolos etds:simbolos) {
             if(etds.getNome().equals(nome)) {
@@ -30,7 +30,11 @@ public class TabelaDeSimbolos {
         }
         return false;
     }
-    
+
+    public String getNome() {
+      return escopo;
+    }
+
     @Override
     public String toString() {
         String ret = "Escopo: "+escopo;
@@ -38,5 +42,12 @@ public class TabelaDeSimbolos {
             ret += "\n   "+etds;
         }
         return ret;
+    }
+
+    public String getTipoSimbolo(String nome){
+      for(EntradaTabelaDeSimbolos etds : simbolos) {
+          if(etds.getNome().equals(nome)) return etds.getTipo();
+      }
+      return null;
     }
 }

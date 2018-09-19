@@ -33,4 +33,17 @@ public class PilhaDeTabelas {
     public List getTodasTabelas() {
         return pilha;
     }
+
+    public void print(){
+      for (TabelaDeSimbolos ts : pilha) {
+          System.out.println(ts.toString());
+      }
+    }
+
+    public String getTipoSimbolo(String nome){
+      for (TabelaDeSimbolos ts : pilha) {
+          if(ts.getTipoSimbolo(nome) != null) return ts.getTipoSimbolo(nome);
+      }
+      return null;
+    }
 }
