@@ -34,22 +34,22 @@ public class LACompiler {
         if(!sp.isModificado()){
           AnalisadorSemantico as = new AnalisadorSemantico(sp);
           as.visitPrograma(arvore);
-        } else {
-            sp.print("Fim da compilacao");
-            String out = sp.toString();
-            try {
-                File fd = new File(args[1]);
-                fd.createNewFile();
-                PrintWriter pw = new PrintWriter(new FileWriter(fd));
-                pw.println(out);
-                pw.close();
-            } catch (ArrayIndexOutOfBoundsException iobe) {
-                File fd = new File("saida.txt");
-                fd.createNewFile();
-                PrintWriter pw = new PrintWriter(new FileWriter(fd));
-                pw.println(out);
-                pw.close();
-            }
+        }
+        sp.print("Fim da compilacao");
+        String out = sp.toString();
+        System.out.println(out);
+        try {
+            File fd = new File(args[1]);
+            fd.createNewFile();
+            PrintWriter pw = new PrintWriter(new FileWriter(fd));
+            pw.println(out);
+            pw.close();
+        } catch (ArrayIndexOutOfBoundsException iobe) {
+            File fd = new File("saida.txt");
+            fd.createNewFile();
+            PrintWriter pw = new PrintWriter(new FileWriter(fd));
+            pw.println(out);
+            pw.close();
         }
     }
 }
