@@ -21,6 +21,7 @@ task fatJar(type: Jar) {
 String testResultsDir = "${rootDir}/resultadosTeste/"
 
 task testParser(type: Exec) {
+    dependsOn('fatJar')
     description = 'Test Parser Execution'
     executable = "java"
     args  = ["-jar", "${rootDir}/libs/CorretorTrabalho1.jar", "java -jar ${rootDir}/build/libs/cla.jar", 'gcc',
@@ -28,6 +29,7 @@ task testParser(type: Exec) {
 }
 
 task testSemantic(type: Exec) {
+    dependsOn('fatJar')
     description = 'Test Semantic Analyzer Execution'
     executable = "java"
     args  = ["-jar", "${rootDir}/libs/CorretorTrabalho1.jar", "java -jar ${rootDir}/build/libs/cla.jar", 'gcc',

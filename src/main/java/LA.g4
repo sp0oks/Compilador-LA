@@ -103,23 +103,23 @@ constantes
 ;
 
 numero_intervalo
-:	OP_UNARIO? NUM_INT ('..'  OP_UNARIO? NUM_INT)?
+:	op_unario? NUM_INT ('..'  op_unario? NUM_INT)?
 ;
 
 exp_aritmetica
-:	termo (OP1 termo)*
+:	termo (op1 termo)*
 ;
 
 termo
-:	fator (OP2 fator)*
+:	fator (op2 fator)*
 ;
 
 fator
-:	parcela (OP3 parcela)?
+:	parcela (op3 parcela)?
 ;
 
 parcela
-:   OP_UNARIO? parcela_unario
+:   op_unario? parcela_unario
 |   parcela_nao_unario
 ;
 
@@ -137,15 +137,15 @@ parcela_nao_unario
 ;
 
 exp_relacional
-:   exp_aritmetica (OP_RELACIONAL exp_aritmetica)?
+:   exp_aritmetica (op_relacional exp_aritmetica)?
 ;
 
 expressao
-:	termo_logico (OP_LOGICO_1 termo_logico)*
+:	termo_logico ('ou' termo_logico)*
 ;
 
 termo_logico
-:	fator_logico (OP_LOGICO_2 fator_logico)*
+:	fator_logico ('e' fator_logico)*
 ;
 
 fator_logico
@@ -157,36 +157,28 @@ parcela_logica
 |	exp_relacional # parcela_logica_expr
 ;
 
-TIPO_BASICO
-:	'literal' | 'inteiro' | 'real' | 'logico'
+op_relacional
+:	'=' | '<>' | '>=' | '<=' | '>' | '<'
 ;
 
-OP1
+op1
 :   '+' | '-'
 ;
 
-OP2
+op2
 :   '*' | '/'
 ;
 
-OP3
+op3
 :   '%'
 ;
 
-OP_UNARIO
-:	'-'
+op_unario
+:   '-'
 ;
 
-OP_LOGICO_1
-:	'ou'
-;
-
-OP_LOGICO_2
-:	'e'
-;
-
-OP_RELACIONAL
-:	'=' | '<>' | '>=' | '<=' | '>' | '<'
+TIPO_BASICO
+:	'literal' | 'inteiro' | 'real' | 'logico'
 ;
 
 IDENT

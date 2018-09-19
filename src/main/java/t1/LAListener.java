@@ -555,4 +555,54 @@ public interface LAListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParcela_logica_expr(LAParser.Parcela_logica_exprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LAParser#op_relacional}.
+	 * @param ctx the parse tree
+	 */
+	void enterOp_relacional(LAParser.Op_relacionalContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LAParser#op_relacional}.
+	 * @param ctx the parse tree
+	 */
+	void exitOp_relacional(LAParser.Op_relacionalContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LAParser#op1}.
+	 * @param ctx the parse tree
+	 */
+	void enterOp1(LAParser.Op1Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link LAParser#op1}.
+	 * @param ctx the parse tree
+	 */
+	void exitOp1(LAParser.Op1Context ctx);
+	/**
+	 * Enter a parse tree produced by {@link LAParser#op2}.
+	 * @param ctx the parse tree
+	 */
+	void enterOp2(LAParser.Op2Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link LAParser#op2}.
+	 * @param ctx the parse tree
+	 */
+	void exitOp2(LAParser.Op2Context ctx);
+	/**
+	 * Enter a parse tree produced by {@link LAParser#op3}.
+	 * @param ctx the parse tree
+	 */
+	void enterOp3(LAParser.Op3Context ctx);
+	/**
+	 * Exit a parse tree produced by {@link LAParser#op3}.
+	 * @param ctx the parse tree
+	 */
+	void exitOp3(LAParser.Op3Context ctx);
+	/**
+	 * Enter a parse tree produced by {@link LAParser#op_unario}.
+	 * @param ctx the parse tree
+	 */
+	void enterOp_unario(LAParser.Op_unarioContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LAParser#op_unario}.
+	 * @param ctx the parse tree
+	 */
+	void exitOp_unario(LAParser.Op_unarioContext ctx);
 }

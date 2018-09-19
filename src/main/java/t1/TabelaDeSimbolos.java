@@ -6,19 +6,19 @@ import java.util.List;
 public class TabelaDeSimbolos {
     private String escopo;
     private List<EntradaTabelaDeSimbolos> simbolos;
-    
+
     public TabelaDeSimbolos(String escopo) {
         simbolos = new ArrayList<>();
         this.escopo = escopo;
     }
     
-    public void adicionarSimbolo(String nome, String tipo) {
-        simbolos.add(new EntradaTabelaDeSimbolos(nome,tipo));
+    public void adicionarSimbolo(String nome, String tipo, LAEnums.tipoSimbolo simbolo) {
+        simbolos.add(new EntradaTabelaDeSimbolos(nome,tipo, simbolo));
     }
     
-    public void adicionarSimbolos(List<String> nomes, String tipo) {
+    public void adicionarSimbolos(List<String> nomes, String tipo, LAEnums.tipoSimbolo simbolo) {
         for(String s:nomes) {
-            simbolos.add(new EntradaTabelaDeSimbolos(s, tipo));
+            simbolos.add(new EntradaTabelaDeSimbolos(s, tipo, simbolo));
         }
     }
     

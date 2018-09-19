@@ -334,4 +334,34 @@ public interface LAVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParcela_logica_expr(LAParser.Parcela_logica_exprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LAParser#op_relacional}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOp_relacional(LAParser.Op_relacionalContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LAParser#op1}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOp1(LAParser.Op1Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link LAParser#op2}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOp2(LAParser.Op2Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link LAParser#op3}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOp3(LAParser.Op3Context ctx);
+	/**
+	 * Visit a parse tree produced by {@link LAParser#op_unario}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOp_unario(LAParser.Op_unarioContext ctx);
 }

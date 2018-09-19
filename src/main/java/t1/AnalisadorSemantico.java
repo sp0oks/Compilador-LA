@@ -3,6 +3,7 @@ package t1;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,14 +11,14 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   PilhaDeTabelas escopos;
   SaidaParser sp;
   HashMap<String, List<String>> tabelaDeParametros;
+  HashMap<String, List<String>> tabelaDeRegistros;
+  ArrayList<String> tabelaDeTipos;
 
   public AnalisadorSemantico(SaidaParser sp) { this.sp = sp; }
 
-  public enum tipoOperacao { ARITMETICA, RELACIONAL, LOGICA }
-
   public boolean isNumerico(String tipo) { return (tipo.equals("inteiro") || tipo.equals("real")); }
 
-  public String getTipoRetorno(tipoOperacao op, String t1, String t2) {
+  public String getTipoRetorno(LAEnums.tipoOperacao op, String t1, String t2) {
       switch (op) {
           case ARITMETICA:
               if (isNumerico(t1) && isNumerico(t2)) {
@@ -41,7 +42,11 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       /* programa: declaracoes 'algoritmo' corpo 'fim_algoritmo'; */
       escopos = new PilhaDeTabelas();
       tabelaDeParametros = new HashMap<>();
+      tabelaDeRegistros = new HashMap<>();
+      tabelaDeTipos = new ArrayList<>();
+
       escopos.empilhar(new TabelaDeSimbolos("global"));
+      tabelaDeTipos.addAll(Arrays.asList("inteiro", "real", "literal", "logico", "^inteiro", "^real", "^literal", "^logico"));
 
       visitDeclaracoes(ctx.declaracoes());
       visitCorpo(ctx.corpo());
@@ -56,13 +61,13 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
           if(escopos.existeSimbolo(ctx.variavel().id1.getText())) {
               sp.println("Linha " + ctx.variavel().id1.start.getLine() + ": identificador " + ctx.variavel().id1.getText() + " ja declarado");
           } else {
-                escopos.topo().adicionarSimbolo(ctx.variavel().id1.getText(), tipo);
+                escopos.topo().adicionarSimbolo(ctx.variavel().id1.getText(), tipo, LAEnums.tipoSimbolo.VARIAVEL);
             }
             for(LAParser.IdentificadorContext id : ctx.variavel().id2) {
                 if(escopos.existeSimbolo(id.getText())){
                     sp.println("Linha " + id.start.getLine() + ": identificador " + id.getText() + " ja declarado");
                 } else {
-                    escopos.topo().adicionarSimbolo(id.getText(), tipo);
+                    escopos.topo().adicionarSimbolo(id.getText(), tipo, LAEnums.tipoSimbolo.VARIAVEL);
                 }
             }
       }
@@ -72,6 +77,8 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   @Override
   public String visitDeclaracao_local_const(LAParser.Declaracao_local_constContext ctx) {
       /* declaracao_local: 'constante'  IDENT ':' tipo_basico '=' valor_constante */
+      String id = ctx.IDENT().getText();
+      escopos.topo().adicionarSimbolo(id, ctx.TIPO_BASICO().getText(), LAEnums.tipoSimbolo.CONSTANTE);
       return null;
   }
 
@@ -121,7 +128,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       String t1 = null;
       for(LAParser.TermoContext t : ctx.termo()){
           String t2 = visitTermo(t);
-          t1 = getTipoRetorno(tipoOperacao.ARITMETICA, t1, t2);
+          t1 = getTipoRetorno(LAEnums.tipoOperacao.ARITMETICA, t1, t2);
       }
       return t1;
   }
@@ -132,7 +139,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       String f1 = null;
       for(LAParser.FatorContext ftr : ctx.fator()){
           String f2 = visitFator(ftr);
-          f1 = getTipoRetorno(tipoOperacao.ARITMETICA, f1, f2);
+          f1 = getTipoRetorno(LAEnums.tipoOperacao.ARITMETICA, f1, f2);
       }
       return f1;
   }
@@ -143,7 +150,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       String p1 = null;
       for(LAParser.ParcelaContext pcl : ctx.parcela()){
           String p2 = visitParcela(pcl);
-          p1 = getTipoRetorno(tipoOperacao.ARITMETICA, p1, p2);
+          p1 = getTipoRetorno(LAEnums.tipoOperacao.ARITMETICA, p1, p2);
       }
       return p1;
   }
@@ -153,7 +160,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       /* parcela: op_unario? parcela_unario | parcela_nao_unario; */
       if (ctx.parcela_unario() != null) {
           String tp = visit(ctx.parcela_unario());
-          if (ctx.OP_UNARIO() != null && !isNumerico(tp)) {
+          if (ctx.op_unario() != null && !isNumerico(tp)) {
               return "tipo_indefinido";
           }
           return tp;
