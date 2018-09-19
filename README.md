@@ -11,7 +11,7 @@ Para montar o projeto:
     ```
   - Analisador Semântico:
     ```bash
-       ./gradlew testParser2
+       ./gradlew testSemantic
     ```
 
 Para realizar testes a parte:
@@ -26,5 +26,5 @@ Caso seja feita alguma mudança na gramática:
   - Compile a gramática:
     ```bash
     cd /Compilador-LA/src/main/java
-    antlr4 -visitor LA.g4 -o <caminho para o .g4>
+    antlr4 -visitor LA.g4 -o <caminho para o diretorio t1>
     ```
