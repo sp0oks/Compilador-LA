@@ -55,17 +55,17 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitDeclaracao_local_var(LAParser.Declaracao_local_varContext ctx) {
-      /* declaracao_local: 'declare'  variavel */
+      /* declaracao_local: 'declare' variavel */
       if(ctx.variavel() != null){
           String tipo = visitVariavel(ctx.variavel());
-          if(escopos.existeSimbolo(ctx.variavel().id1.getText())) {
-              sp.println("Linha " + ctx.variavel().id1.start.getLine() + ": identificador " + ctx.variavel().id1.getText() + " ja declarado");
+          if(escopos.topo().existeSimbolo(ctx.variavel().id1.getText())) {
+              sp.println("Linha " + ctx.variavel().id1.start.getLine() + ": identificador " + ctx.variavel().id1.getText() + " ja declarado anteriormente");
           } else {
                 escopos.topo().adicionarSimbolo(ctx.variavel().id1.getText(), tipo, LAEnums.tipoSimbolo.VARIAVEL);
             }
             for(LAParser.IdentificadorContext id : ctx.variavel().id2) {
-                if(escopos.existeSimbolo(id.getText())){
-                    sp.println("Linha " + id.start.getLine() + ": identificador " + id.getText() + " ja declarado");
+                if(escopos.topo().existeSimbolo(id.getText())){
+                    sp.println("Linha " + id.start.getLine() + ": identificador " + id.getText() + " ja declarado anteriormente");
                 } else {
                     escopos.topo().adicionarSimbolo(id.getText(), tipo, LAEnums.tipoSimbolo.VARIAVEL);
                 }
@@ -78,13 +78,24 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   public String visitDeclaracao_local_const(LAParser.Declaracao_local_constContext ctx) {
       /* declaracao_local: 'constante'  IDENT ':' tipo_basico '=' valor_constante */
       String id = ctx.IDENT().getText();
-      escopos.topo().adicionarSimbolo(id, ctx.TIPO_BASICO().getText(), LAEnums.tipoSimbolo.CONSTANTE);
+      if(escopos.topo().existeSimbolo(ctx.IDENT().getText())) {
+          sp.println("Linha " + ctx.start.getLine() + ": identificador " + ctx.IDENT().getText() + " ja declarado anteriormente");
+      } else {
+          escopos.topo().adicionarSimbolo(id, ctx.TIPO_BASICO().getText(), LAEnums.tipoSimbolo.CONSTANTE);
+      }
       return null;
   }
 
   @Override
   public String visitDeclaracao_local_tipo(LAParser.Declaracao_local_tipoContext ctx) {
       /* declaraçao_local: 'tipo'  IDENT ':' tipo */
+      String id = ctx.IDENT().getText();
+      if(escopos.topo().existeSimbolo(ctx.IDENT().getText())) {
+          sp.println("Linha " + ctx.start.getLine() + ": identificador " + ctx.IDENT().getText() + " ja declarado anteriormente");
+      } else {
+          String tipo = visitTipo(ctx.tipo());
+          escopos.topo().adicionarSimbolo(id, tipo, LAEnums.tipoSimbolo.TIPO);
+      }
       return null;
   }
 
