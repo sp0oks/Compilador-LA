@@ -78,7 +78,7 @@ corpo
 ;
 
 cmd
-:   'leia' '(' '^'? identificador (',' expressao)* ')'  # cmdLeia
+:   'leia' '(' '^'? identificador (',' identificador)* ')'  # cmdLeia
 |	'escreva' '(' expressao (',' expressao)* ')'    # cmdEscreva
 |	'se' expressao 'entao' (cmd)* ('senao' (cmd)*)? 'fim_se'    # cmdSe
 |	'caso' exp_aritmetica 'seja' selecao ('senao' (cmd)*)? 'fim_caso'   # cmdCaso
