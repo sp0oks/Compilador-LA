@@ -197,9 +197,28 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   }
 
   @Override
+  public String visitExpressao (LAParser.ExpressaoContext ctx) {
+      /* termo_logico ('ou' termo_logico)* */
+      if (ctx.termo_logico != null) {
+          String tlogico = null;
+
+          for (LAParser.Termo_logicoContext t : ctx.termo_logico()){
+              tlogico = visitTermo_logico(t);
+              tlogico = getTipoRetorno(LAEnums.tipoOperacao.LOGICA, t1, t2);
+          }
+          return tlogico;
+      }
+  }
+
+  @Override
   public String visitParcela_unario_expr (LAParser.Parcela_unario_exprContext ctx) {
       /* '(' expressao ')'; */
-      return null;
+      if(ctx.expressao() != null){
+          String exp = ctx.expressao().getText();
+          String texp = visitExpressao(ctx.expressao());
+
+          return texp;
+      }
   }
 
   @Override
@@ -230,6 +249,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitParcela_unario_atom_int (LAParser.Parcela_unario_atom_intContext ctx) { return "inteiro"; }
+        /* declaraçao_local: */
 
   @Override
   public String visitParcela_unario_atom_real (LAParser.Parcela_unario_atom_realContext ctx) { return "real"; }
@@ -238,4 +258,26 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   public String visitParcela_nao_unario_id (LAParser.Parcela_nao_unario_idContext ctx) {
       return null;
   }
+
+  @Override
+  public String visitVariavel(LAParser.Variavel_tipoContext ctx) {
+      /* declaraçao_local: id1=identificador (',' id2+=identificador)* ':' tipo */
+      if(ctx.variavel != null){
+          visitIdentficador(ctx.id1);
+          for (LAParser.Idenificador_Context id : ctx.variavel() id2) {
+              if(escopos.topo().existeSimbolo(id.getText())){
+                  sp.println("Linha " + id.start.getLine() + ": identificador " + id.getText() + " ja declarado anteriormente");
+              } else {
+                  escopos.topo().adicionarSimbolo(id.getText(), tipo, LAEnums.tipoSimbolo.VARIAVEL);
+                  visitIdentificador(ctx.id);
+              }
+          }
+      }
+      return null;
+  }
+
+  @Override
+    public String
 }
+
+
