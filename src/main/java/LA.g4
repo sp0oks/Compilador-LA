@@ -23,7 +23,7 @@ declaracao_local
 ;
 
 variavel
-: id1=identificador (',' id2+=identificador)* ':' tipo
+: identificador (',' identificador)* ':' tipo
 ;
 
 identificador

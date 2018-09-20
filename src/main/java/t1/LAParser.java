@@ -1,4 +1,4 @@
-// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/LA.g4 by ANTLR 4.7
+// Generated from C:/Users/Gabriel/IdeaProjects/Compilador-LA/src/main/java\LA.g4 by ANTLR 4.7
 package t1;
 
 import org.antlr.v4.runtime.*;
@@ -441,17 +441,14 @@ public class LAParser extends Parser {
 	}
 
 	public static class VariavelContext extends ParserRuleContext {
-		public IdentificadorContext id1;
-		public IdentificadorContext identificador;
-		public List<IdentificadorContext> id2 = new ArrayList<IdentificadorContext>();
-		public TipoContext tipo() {
-			return getRuleContext(TipoContext.class,0);
-		}
 		public List<IdentificadorContext> identificador() {
 			return getRuleContexts(IdentificadorContext.class);
 		}
 		public IdentificadorContext identificador(int i) {
 			return getRuleContext(IdentificadorContext.class,i);
+		}
+		public TipoContext tipo() {
+			return getRuleContext(TipoContext.class,0);
 		}
 		public VariavelContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -480,7 +477,7 @@ public class LAParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(108);
-			((VariavelContext)_localctx).id1 = identificador();
+			identificador();
 			setState(113);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -490,8 +487,7 @@ public class LAParser extends Parser {
 				setState(109);
 				match(T__7);
 				setState(110);
-				((VariavelContext)_localctx).identificador = identificador();
-				((VariavelContext)_localctx).id2.add(((VariavelContext)_localctx).identificador);
+				identificador();
 				}
 				}
 				setState(115);
