@@ -1,4 +1,4 @@
-// Generated from LA.g4 by ANTLR 4.7.1
+// Generated from C:/Users/Gabriel/IdeaProjects/Compilador-LA/src/main/java\LA.g4 by ANTLR 4.7
 package t1;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class LALexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.7.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.7", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -53,7 +53,7 @@ public class LALexer extends Lexer {
 		"'funcao'", "'fim_funcao'", "'var'", "'leia'", "'escreva'", "'se'", "'entao'", 
 		"'senao'", "'fim_se'", "'caso'", "'seja'", "'fim_caso'", "'para'", "'<-'", 
 		"'ate'", "'faca'", "'fim_para'", "'enquanto'", "'fim_enquanto'", "';'", 
-		"'retorne'", "'..'", "'&'", "'ou'", "'e'", "'nao'", "'<>'", "'>='", "'<='", 
+		"'retorne'", "'..'", "'ou'", "'e'", "'nao'", "'&'", "'<>'", "'>='", "'<='", 
 		"'>'", "'<'", "'+'", "'-'", "'*'", "'/'", "'%'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
@@ -175,7 +175,7 @@ public class LALexer extends Lexer {
 		"!\3!\3!\3!\3!\3\"\3\"\3\"\3\"\3\"\3#\3#\3#\3$\3$\3$\3$\3%\3%\3%\3%\3%"+
 		"\3&\3&\3&\3&\3&\3&\3&\3&\3&\3\'\3\'\3\'\3\'\3\'\3\'\3\'\3\'\3\'\3(\3("+
 		"\3(\3(\3(\3(\3(\3(\3(\3(\3(\3(\3(\3)\3)\3*\3*\3*\3*\3*\3*\3*\3*\3+\3+"+
-		"\3+\3,\3,\3-\3-\3-\3.\3.\3/\3/\3/\3/\3\60\3\60\3\60\3\61\3\61\3\61\3\62"+
+		"\3+\3,\3,\3,\3-\3-\3.\3.\3.\3.\3/\3/\3\60\3\60\3\60\3\61\3\61\3\61\3\62"+
 		"\3\62\3\62\3\63\3\63\3\64\3\64\3\65\3\65\3\66\3\66\3\67\3\67\38\38\39"+
 		"\39\3:\3:\3:\3:\3:\3:\3:\3:\3:\3:\3:\3:\3:\3:\3:\3:\3:\3:\3:\3:\3:\3:"+
 		"\3:\3:\5:\u01cf\n:\3;\3;\7;\u01d3\n;\f;\16;\u01d6\13;\3<\3<\7<\u01da\n"+
@@ -207,7 +207,7 @@ public class LALexer extends Lexer {
 		"\3\2\2\2=\u0144\3\2\2\2?\u0149\3\2\2\2A\u014e\3\2\2\2C\u0157\3\2\2\2E"+
 		"\u015c\3\2\2\2G\u015f\3\2\2\2I\u0163\3\2\2\2K\u0168\3\2\2\2M\u0171\3\2"+
 		"\2\2O\u017a\3\2\2\2Q\u0187\3\2\2\2S\u0189\3\2\2\2U\u0191\3\2\2\2W\u0194"+
-		"\3\2\2\2Y\u0196\3\2\2\2[\u0199\3\2\2\2]\u019b\3\2\2\2_\u019f\3\2\2\2a"+
+		"\3\2\2\2Y\u0197\3\2\2\2[\u0199\3\2\2\2]\u019d\3\2\2\2_\u019f\3\2\2\2a"+
 		"\u01a2\3\2\2\2c\u01a5\3\2\2\2e\u01a8\3\2\2\2g\u01aa\3\2\2\2i\u01ac\3\2"+
 		"\2\2k\u01ae\3\2\2\2m\u01b0\3\2\2\2o\u01b2\3\2\2\2q\u01b4\3\2\2\2s\u01ce"+
 		"\3\2\2\2u\u01d0\3\2\2\2w\u01d7\3\2\2\2y\u01e1\3\2\2\2{\u01e5\3\2\2\2}"+
@@ -282,10 +282,10 @@ public class LALexer extends Lexer {
 		"\7q\2\2\u0186P\3\2\2\2\u0187\u0188\7=\2\2\u0188R\3\2\2\2\u0189\u018a\7"+
 		"t\2\2\u018a\u018b\7g\2\2\u018b\u018c\7v\2\2\u018c\u018d\7q\2\2\u018d\u018e"+
 		"\7t\2\2\u018e\u018f\7p\2\2\u018f\u0190\7g\2\2\u0190T\3\2\2\2\u0191\u0192"+
-		"\7\60\2\2\u0192\u0193\7\60\2\2\u0193V\3\2\2\2\u0194\u0195\7(\2\2\u0195"+
-		"X\3\2\2\2\u0196\u0197\7q\2\2\u0197\u0198\7w\2\2\u0198Z\3\2\2\2\u0199\u019a"+
-		"\7g\2\2\u019a\\\3\2\2\2\u019b\u019c\7p\2\2\u019c\u019d\7c\2\2\u019d\u019e"+
-		"\7q\2\2\u019e^\3\2\2\2\u019f\u01a0\7>\2\2\u01a0\u01a1\7@\2\2\u01a1`\3"+
+		"\7\60\2\2\u0192\u0193\7\60\2\2\u0193V\3\2\2\2\u0194\u0195\7q\2\2\u0195"+
+		"\u0196\7w\2\2\u0196X\3\2\2\2\u0197\u0198\7g\2\2\u0198Z\3\2\2\2\u0199\u019a"+
+		"\7p\2\2\u019a\u019b\7c\2\2\u019b\u019c\7q\2\2\u019c\\\3\2\2\2\u019d\u019e"+
+		"\7(\2\2\u019e^\3\2\2\2\u019f\u01a0\7>\2\2\u01a0\u01a1\7@\2\2\u01a1`\3"+
 		"\2\2\2\u01a2\u01a3\7@\2\2\u01a3\u01a4\7?\2\2\u01a4b\3\2\2\2\u01a5\u01a6"+
 		"\7>\2\2\u01a6\u01a7\7?\2\2\u01a7d\3\2\2\2\u01a8\u01a9\7@\2\2\u01a9f\3"+
 		"\2\2\2\u01aa\u01ab\7>\2\2\u01abh\3\2\2\2\u01ac\u01ad\7-\2\2\u01adj\3\2"+

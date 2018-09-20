@@ -1,4 +1,4 @@
-// Generated from LA.g4 by ANTLR 4.7.1
+// Generated from C:/Users/Gabriel/IdeaProjects/Compilador-LA/src/main/java\LA.g4 by ANTLR 4.7
 package t1;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -224,6 +224,44 @@ public interface LAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumero_intervalo(LAParser.Numero_intervaloContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LAParser#expressao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpressao(LAParser.ExpressaoContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LAParser#termo_logico}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTermo_logico(LAParser.Termo_logicoContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LAParser#fator_logico}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFator_logico(LAParser.Fator_logicoContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parcela_logica_atom}
+	 * labeled alternative in {@link LAParser#parcela_logica}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParcela_logica_atom(LAParser.Parcela_logica_atomContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parcela_logica_expr}
+	 * labeled alternative in {@link LAParser#parcela_logica}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParcela_logica_expr(LAParser.Parcela_logica_exprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LAParser#exp_relacional}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExp_relacional(LAParser.Exp_relacionalContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LAParser#exp_aritmetica}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -297,44 +335,6 @@ public interface LAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParcela_nao_unario_cad(LAParser.Parcela_nao_unario_cadContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#exp_relacional}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExp_relacional(LAParser.Exp_relacionalContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LAParser#expressao}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExpressao(LAParser.ExpressaoContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LAParser#termo_logico}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTermo_logico(LAParser.Termo_logicoContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LAParser#fator_logico}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFator_logico(LAParser.Fator_logicoContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code parcela_logica_atom}
-	 * labeled alternative in {@link LAParser#parcela_logica}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitParcela_logica_atom(LAParser.Parcela_logica_atomContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code parcela_logica_expr}
-	 * labeled alternative in {@link LAParser#parcela_logica}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitParcela_logica_expr(LAParser.Parcela_logica_exprContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link LAParser#op_relacional}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -364,4 +364,10 @@ public interface LAVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitOp_unario(LAParser.Op_unarioContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LAParser#op_ptr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOp_ptr(LAParser.Op_ptrContext ctx);
 }

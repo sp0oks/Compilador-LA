@@ -85,7 +85,7 @@ cmd
 |	'para' IDENT '<-' exp_aritmetica 'ate' exp_aritmetica 'faca' (cmd)* 'fim_para'  # cmdPara
 |	'enquanto' expressao 'faca' (cmd)* 'fim_enquanto'   # cmdEnquanto
 |	'faca' (cmd)* 'ate' expressao   # cmdFaca
-| 	'^'? identificador '<-' expressao   # cmdAtribuicao
+| 	op_ptr? identificador '<-' expressao   # cmdAtribuicao
 |	IDENT '(' expressao (';' expressao)? ')'    # cmdChamada
 |	'retorne'  expressao    # cmdRetorne
 ;
@@ -104,6 +104,27 @@ constantes
 
 numero_intervalo
 :	op_unario? NUM_INT ('..'  op_unario? NUM_INT)?
+;
+
+expressao
+:	termo_logico ('ou' termo_logico)*
+;
+
+termo_logico
+:	fator_logico ('e' fator_logico)*
+;
+
+fator_logico
+:	'nao'? parcela_logica
+;
+
+parcela_logica
+:	('verdadeiro'  | 'falso') # parcela_logica_atom
+|	exp_relacional # parcela_logica_expr
+;
+
+exp_relacional
+:   exp_aritmetica (op_relacional exp_aritmetica)?
 ;
 
 exp_aritmetica
@@ -136,27 +157,6 @@ parcela_nao_unario
 |   CADEIA # parcela_nao_unario_cad
 ;
 
-exp_relacional
-:   exp_aritmetica (op_relacional exp_aritmetica)?
-;
-
-expressao
-:	termo_logico ('ou' termo_logico)*
-;
-
-termo_logico
-:	fator_logico ('e' fator_logico)*
-;
-
-fator_logico
-:	'nao'? parcela_logica
-;
-
-parcela_logica
-:	('verdadeiro'  | 'falso') # parcela_logica_atom
-|	exp_relacional # parcela_logica_expr
-;
-
 op_relacional
 :	'=' | '<>' | '>=' | '<=' | '>' | '<'
 ;
@@ -175,6 +175,10 @@ op3
 
 op_unario
 :   '-'
+;
+
+op_ptr
+:   '^'
 ;
 
 TIPO_BASICO

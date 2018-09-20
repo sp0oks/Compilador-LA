@@ -1,4 +1,4 @@
-// Generated from LA.g4 by ANTLR 4.7.1
+// Generated from C:/Users/Gabriel/IdeaProjects/Compilador-LA/src/main/java\LA.g4 by ANTLR 4.7
 package t1;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -368,6 +368,70 @@ public interface LAListener extends ParseTreeListener {
 	 */
 	void exitNumero_intervalo(LAParser.Numero_intervaloContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LAParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpressao(LAParser.ExpressaoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LAParser#expressao}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpressao(LAParser.ExpressaoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LAParser#termo_logico}.
+	 * @param ctx the parse tree
+	 */
+	void enterTermo_logico(LAParser.Termo_logicoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LAParser#termo_logico}.
+	 * @param ctx the parse tree
+	 */
+	void exitTermo_logico(LAParser.Termo_logicoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LAParser#fator_logico}.
+	 * @param ctx the parse tree
+	 */
+	void enterFator_logico(LAParser.Fator_logicoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LAParser#fator_logico}.
+	 * @param ctx the parse tree
+	 */
+	void exitFator_logico(LAParser.Fator_logicoContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code parcela_logica_atom}
+	 * labeled alternative in {@link LAParser#parcela_logica}.
+	 * @param ctx the parse tree
+	 */
+	void enterParcela_logica_atom(LAParser.Parcela_logica_atomContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code parcela_logica_atom}
+	 * labeled alternative in {@link LAParser#parcela_logica}.
+	 * @param ctx the parse tree
+	 */
+	void exitParcela_logica_atom(LAParser.Parcela_logica_atomContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code parcela_logica_expr}
+	 * labeled alternative in {@link LAParser#parcela_logica}.
+	 * @param ctx the parse tree
+	 */
+	void enterParcela_logica_expr(LAParser.Parcela_logica_exprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code parcela_logica_expr}
+	 * labeled alternative in {@link LAParser#parcela_logica}.
+	 * @param ctx the parse tree
+	 */
+	void exitParcela_logica_expr(LAParser.Parcela_logica_exprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LAParser#exp_relacional}.
+	 * @param ctx the parse tree
+	 */
+	void enterExp_relacional(LAParser.Exp_relacionalContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LAParser#exp_relacional}.
+	 * @param ctx the parse tree
+	 */
+	void exitExp_relacional(LAParser.Exp_relacionalContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LAParser#exp_aritmetica}.
 	 * @param ctx the parse tree
 	 */
@@ -492,70 +556,6 @@ public interface LAListener extends ParseTreeListener {
 	 */
 	void exitParcela_nao_unario_cad(LAParser.Parcela_nao_unario_cadContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#exp_relacional}.
-	 * @param ctx the parse tree
-	 */
-	void enterExp_relacional(LAParser.Exp_relacionalContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LAParser#exp_relacional}.
-	 * @param ctx the parse tree
-	 */
-	void exitExp_relacional(LAParser.Exp_relacionalContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link LAParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpressao(LAParser.ExpressaoContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LAParser#expressao}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpressao(LAParser.ExpressaoContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link LAParser#termo_logico}.
-	 * @param ctx the parse tree
-	 */
-	void enterTermo_logico(LAParser.Termo_logicoContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LAParser#termo_logico}.
-	 * @param ctx the parse tree
-	 */
-	void exitTermo_logico(LAParser.Termo_logicoContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link LAParser#fator_logico}.
-	 * @param ctx the parse tree
-	 */
-	void enterFator_logico(LAParser.Fator_logicoContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LAParser#fator_logico}.
-	 * @param ctx the parse tree
-	 */
-	void exitFator_logico(LAParser.Fator_logicoContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code parcela_logica_atom}
-	 * labeled alternative in {@link LAParser#parcela_logica}.
-	 * @param ctx the parse tree
-	 */
-	void enterParcela_logica_atom(LAParser.Parcela_logica_atomContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code parcela_logica_atom}
-	 * labeled alternative in {@link LAParser#parcela_logica}.
-	 * @param ctx the parse tree
-	 */
-	void exitParcela_logica_atom(LAParser.Parcela_logica_atomContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code parcela_logica_expr}
-	 * labeled alternative in {@link LAParser#parcela_logica}.
-	 * @param ctx the parse tree
-	 */
-	void enterParcela_logica_expr(LAParser.Parcela_logica_exprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code parcela_logica_expr}
-	 * labeled alternative in {@link LAParser#parcela_logica}.
-	 * @param ctx the parse tree
-	 */
-	void exitParcela_logica_expr(LAParser.Parcela_logica_exprContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link LAParser#op_relacional}.
 	 * @param ctx the parse tree
 	 */
@@ -605,4 +605,14 @@ public interface LAListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitOp_unario(LAParser.Op_unarioContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LAParser#op_ptr}.
+	 * @param ctx the parse tree
+	 */
+	void enterOp_ptr(LAParser.Op_ptrContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LAParser#op_ptr}.
+	 * @param ctx the parse tree
+	 */
+	void exitOp_ptr(LAParser.Op_ptrContext ctx);
 }

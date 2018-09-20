@@ -36,6 +36,11 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
                   return "logico";
               }
               return "tipo_invalido";
+          case PONTEIRO:
+              if (t1.startsWith("^") && t2.startsWith("&")) {
+                  return t1;
+              }
+              return null;
           default:
               return null;
       }
@@ -162,6 +167,47 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   }
 
   @Override
+  public String visitCmdPara(LAParser.CmdParaContext ctx) {
+      /* 'para' IDENT '<-' exp_aritmetica 'ate' exp_aritmetica 'faca' (cmd)* 'fim_para' */
+      if(escopos.existeSimbolo(ctx.IDENT().getText())) {
+          String tipo = escopos.getTipoSimbolo(ctx.IDENT().getText());
+          for (LAParser.Exp_aritmeticaContext exp : ctx.exp_aritmetica()) {
+              tipo = getTipoRetorno(LAEnums.tipoOperacao.ARITMETICA, tipo, visitExp_aritmetica(exp));
+          }
+          if (tipo.equals("tipo_invalido")) {
+              sp.println("Linha " + ctx.start.getLine() + ": atribuicao nao compativel para " + ctx.IDENT().getText());
+          }
+          if (ctx.cmd() != null) {
+              for (LAParser.CmdContext cmd : ctx.cmd()) {
+                  visit(cmd);
+              }
+          }
+      } else {
+          sp.println("Linha " + ctx.start.getLine() + ": identificador " + ctx.IDENT().getText() + " nao declarado");
+      }
+      return null;
+  }
+
+  @Override
+  public String visitCmdAtribuicao(LAParser.CmdAtribuicaoContext ctx) {
+      /* '^'? identificador '<-' expressao */
+      String tipo;
+      LAEnums.tipoOperacao op;
+      if (ctx.op_ptr() != null) {
+          tipo = "^" + visitIdentificador(ctx.identificador());
+          op = LAEnums.tipoOperacao.PONTEIRO;
+      } else {
+          tipo = visitIdentificador(ctx.identificador());
+          if (tipo.equals("logico")) op = LAEnums.tipoOperacao.LOGICA;
+          else op = LAEnums.tipoOperacao.ARITMETICA;
+      }
+      if (getTipoRetorno(op, tipo, visitExpressao(ctx.expressao())).equals("tipo_invalido")) {
+          sp.println("Linha " + ctx.start.getLine() + ": atribuicao nao compativel para " + ctx.identificador().IDENT(0).getText());
+      }
+      return null;
+  }
+
+  @Override
   public String visitCmdRetorne(LAParser.CmdRetorneContext ctx) {
     if(!escopos.topo().getNome().equals("funcao")){
       sp.println("Linha " + ctx.start.getLine() + ": comando retorne nao permitido nesse escopo");
@@ -247,21 +293,6 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   }
 
   @Override
-  public String visitParcela_unario_id (LAParser.Parcela_unario_idContext ctx) {
-      /* parcela_unario: '^'? identificador */
-      if(ctx.identificador() != null) {
-          String id = ctx.identificador().getText();
-          String tid = visitIdentificador(ctx.identificador());
-
-          if (!escopos.existeSimbolo(id)) {
-              sp.println("Linha " + ctx.identificador().start.getLine() + ": identificador " + id + "nao declarado");
-          }
-          return tid;
-      }
-      return null;
-  }
-
-  @Override
   public String visitParcela_unario_atom_int (LAParser.Parcela_unario_atom_intContext ctx) {
       return "inteiro";
   }
@@ -269,5 +300,16 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   @Override
   public String visitParcela_unario_atom_real (LAParser.Parcela_unario_atom_realContext ctx) {
       return "real";
+  }
+
+  @Override
+  public String visitParcela_nao_unario_id (LAParser.Parcela_nao_unario_idContext ctx) {
+      /* '&'  identificador */
+      return "&" + visitIdentificador(ctx.identificador());
+  }
+
+  @Override
+  public String visitParcela_nao_unario_cad (LAParser.Parcela_nao_unario_cadContext ctx) {
+      return "literal";
   }
 }
