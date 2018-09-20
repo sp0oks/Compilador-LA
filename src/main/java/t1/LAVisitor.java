@@ -1,4 +1,4 @@
-// Generated from C:/Users/Gabriel/IdeaProjects/Compilador-LA/src/main/java\LA.g4 by ANTLR 4.7
+// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/LA.g4 by ANTLR 4.7
 package t1;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -74,17 +74,23 @@ public interface LAVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTipo(LAParser.TipoContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LAParser#tipo_estendido}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTipo_estendido(LAParser.Tipo_estendidoContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LAParser#tipo_basico_ident}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitTipo_basico_ident(LAParser.Tipo_basico_identContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LAParser#tipo_estendido}.
+	 * Visit a parse tree produced by {@link LAParser#tipo_basico}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTipo_estendido(LAParser.Tipo_estendidoContext ctx);
+	T visitTipo_basico(LAParser.Tipo_basicoContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LAParser#valor_constante}.
 	 * @param ctx the parse tree

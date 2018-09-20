@@ -18,7 +18,7 @@ decl_local_global
 
 declaracao_local
 :	'declare'  variavel # declaracao_local_var
-|	'constante'  IDENT ':' TIPO_BASICO '=' valor_constante # declaracao_local_const
+|	'constante'  IDENT ':' tipo_basico '=' valor_constante # declaracao_local_const
 |	'tipo'  IDENT ':' tipo # declaracao_local_tipo
 ;
 
@@ -39,25 +39,31 @@ tipo
 |	tipo_estendido
 ;
 
+tipo_estendido
+:	op_ptr? tipo_basico_ident
+;
+
 tipo_basico_ident
-:	TIPO_BASICO
+:	tipo_basico
 |	IDENT
 ;
 
-tipo_estendido
-:	'^'? tipo_basico_ident
+tipo_basico
+:   'literal'
+|   'inteiro'
+|   'real'
+|   'logico'
 ;
 
 valor_constante
 :	CADEIA
 |	NUM_INT
 |	NUM_REAL
-|	'verdadeiro'
-|	'falso'
+|	ATOMO
 ;
 
 registro
-:	'registro'  (variavel)* 'fim_registro'
+:	'registro' (variavel)* 'fim_registro'
 ;
 
 declaracao_global
@@ -107,11 +113,11 @@ numero_intervalo
 ;
 
 expressao
-:	termo_logico ('ou' termo_logico)*
+:	t1=termo_logico ('ou' t2+=termo_logico)*
 ;
 
 termo_logico
-:	fator_logico ('e' fator_logico)*
+:	f1=fator_logico ('e' f2+=fator_logico)*
 ;
 
 fator_logico
@@ -119,7 +125,7 @@ fator_logico
 ;
 
 parcela_logica
-:	('verdadeiro'  | 'falso') # parcela_logica_atom
+:	ATOMO # parcela_logica_atom
 |	exp_relacional # parcela_logica_expr
 ;
 
@@ -181,16 +187,16 @@ op_ptr
 :   '^'
 ;
 
-TIPO_BASICO
-:	'literal' | 'inteiro' | 'real' | 'logico'
-;
-
 IDENT
 :	[a-zA-Z_] [0-9a-zA-Z_]*
 ;
 
 CADEIA
 :	'"' .*? '"'
+;
+
+ATOMO
+: 'verdadeiro' | 'falso'
 ;
 
 NUM_INT

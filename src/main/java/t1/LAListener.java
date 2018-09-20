@@ -1,4 +1,4 @@
-// Generated from C:/Users/Gabriel/IdeaProjects/Compilador-LA/src/main/java\LA.g4 by ANTLR 4.7
+// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/LA.g4 by ANTLR 4.7
 package t1;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -114,6 +114,16 @@ public interface LAListener extends ParseTreeListener {
 	 */
 	void exitTipo(LAParser.TipoContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LAParser#tipo_estendido}.
+	 * @param ctx the parse tree
+	 */
+	void enterTipo_estendido(LAParser.Tipo_estendidoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LAParser#tipo_estendido}.
+	 * @param ctx the parse tree
+	 */
+	void exitTipo_estendido(LAParser.Tipo_estendidoContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LAParser#tipo_basico_ident}.
 	 * @param ctx the parse tree
 	 */
@@ -124,15 +134,15 @@ public interface LAListener extends ParseTreeListener {
 	 */
 	void exitTipo_basico_ident(LAParser.Tipo_basico_identContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LAParser#tipo_estendido}.
+	 * Enter a parse tree produced by {@link LAParser#tipo_basico}.
 	 * @param ctx the parse tree
 	 */
-	void enterTipo_estendido(LAParser.Tipo_estendidoContext ctx);
+	void enterTipo_basico(LAParser.Tipo_basicoContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LAParser#tipo_estendido}.
+	 * Exit a parse tree produced by {@link LAParser#tipo_basico}.
 	 * @param ctx the parse tree
 	 */
-	void exitTipo_estendido(LAParser.Tipo_estendidoContext ctx);
+	void exitTipo_basico(LAParser.Tipo_basicoContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LAParser#valor_constante}.
 	 * @param ctx the parse tree

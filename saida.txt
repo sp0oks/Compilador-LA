@@ -1,2 +1,3 @@
-Linhas 7: identificador nome nao declarado
+Linha 10: identificador abastecimento nao declarado
+consumo: null
 Fim da compilacao

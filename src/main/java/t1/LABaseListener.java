@@ -1,4 +1,4 @@
-// Generated from C:/Users/Gabriel/IdeaProjects/Compilador-LA/src/main/java\LA.g4 by ANTLR 4.7
+// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/LA.g4 by ANTLR 4.7
 package t1;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -136,6 +136,18 @@ public class LABaseListener implements LAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTipo_estendido(LAParser.Tipo_estendidoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTipo_estendido(LAParser.Tipo_estendidoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterTipo_basico_ident(LAParser.Tipo_basico_identContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -148,13 +160,13 @@ public class LABaseListener implements LAListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTipo_estendido(LAParser.Tipo_estendidoContext ctx) { }
+	@Override public void enterTipo_basico(LAParser.Tipo_basicoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTipo_estendido(LAParser.Tipo_estendidoContext ctx) { }
+	@Override public void exitTipo_basico(LAParser.Tipo_basicoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
