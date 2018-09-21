@@ -1,12 +1,15 @@
 package t1;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class AnalisadorSemantico extends LABaseVisitor<String> {
   PilhaDeTabelas escopos;
   SaidaParser sp;
   HashMap<String, List<String>> tabelaDeParametros;
-  LinkedHashMap<String, List<String>> tabelaDeRegistros;
+  HashMap<String, List<String>> tabelaDeRegistros;
   ArrayList<String> tabelaDeTipos;
 
   public AnalisadorSemantico(SaidaParser sp) { this.sp = sp; }
@@ -57,7 +60,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       /* programa: declaracoes 'algoritmo' corpo 'fim_algoritmo'; */
       escopos = new PilhaDeTabelas();
       tabelaDeParametros = new HashMap<>();
-      tabelaDeRegistros = new LinkedHashMap<>();
+      tabelaDeRegistros = new HashMap<>();
       tabelaDeTipos = new ArrayList<>();
 
       escopos.empilhar(new TabelaDeSimbolos("global"));
@@ -183,21 +186,28 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   @Override
   public String visitCmdAtribuicao(LAParser.CmdAtribuicaoContext ctx) {
       /* '^'? identificador '<-' expressao */
-      String tipo, tExpr, tRet;
+      String tExpr, tRet;
+      String tipo = visitIdentificador(ctx.identificador());
+      String id = ctx.identificador().IDENT(0).getText();
       LAEnums.tipoOperacao op = LAEnums.tipoOperacao.ARITMETICA;
-      if (ctx.op_ptr() != null) {
-          tipo = "^" + visitIdentificador(ctx.identificador());
-          op = LAEnums.tipoOperacao.PONTEIRO;
-      } else {
-          tipo = visitIdentificador(ctx.identificador());
-          if (tipo != null) {
+      // temporario, tipos não podem ser null
+      if (tipo != null) {
+          if (tipo.startsWith("^")) op = LAEnums.tipoOperacao.PONTEIRO;
+          if (ctx.op_ptr() != null) {
+              id = "^" + id;
+              if (!tipo.startsWith("^")) {
+                  tipo = "^" + visitIdentificador(ctx.identificador());
+                  op = LAEnums.tipoOperacao.PONTEIRO;
+              }
+          } else {
               if (tipo.equals("logico")) op = LAEnums.tipoOperacao.LOGICA;
           }
       }
       tExpr = visitExpressao(ctx.expressao());
       tRet = getTipoRetorno(op, tipo, tExpr);
+
       if (tRet != null && tRet.equals("tipo_invalido")) {
-          sp.println("Linha " + ctx.start.getLine() + ": atribuicao nao compativel para " + ctx.identificador().IDENT(0).getText());
+          sp.println("Linha " + ctx.start.getLine() + ": atribuicao nao compativel para " + id);
       }
       return null;
   }
