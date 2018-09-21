@@ -64,7 +64,8 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       tabelaDeTipos = new ArrayList<>();
 
       escopos.empilhar(new TabelaDeSimbolos("global"));
-      tabelaDeTipos.addAll(Arrays.asList("inteiro", "real", "literal", "logico", "^inteiro", "^real", "^literal", "^logico"));
+      tabelaDeTipos.addAll(Arrays.asList("inteiro", "real", "literal", "logico", "registro",
+                                         "^inteiro", "^real", "^literal", "^logico", "^registro"));
 
       visitDeclaracoes(ctx.declaracoes());
       visitCorpo(ctx.corpo());
