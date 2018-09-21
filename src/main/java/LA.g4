@@ -59,7 +59,8 @@ valor_constante
 :	CADEIA
 |	NUM_INT
 |	NUM_REAL
-|	ATOMO
+|	'verdadeiro'
+|   'falso'
 ;
 
 registro
@@ -125,7 +126,7 @@ fator_logico
 ;
 
 parcela_logica
-:	ATOMO # parcela_logica_atom
+:	('verdadeiro' | 'falso') # parcela_logica_atom
 |	exp_relacional # parcela_logica_expr
 ;
 
@@ -193,10 +194,6 @@ IDENT
 
 CADEIA
 :	'"' .*? '"'
-;
-
-ATOMO
-: 'verdadeiro' | 'falso'
 ;
 
 NUM_INT
