@@ -27,11 +27,11 @@ variavel
 ;
 
 identificador
-:	IDENT ('.'  IDENT)* dimensao
+:	IDENT ('.'  IDENT)* dimensao?
 ;
 
 dimensao
-: 	('[' exp_aritmetica ']')*
+: 	('[' exp_aritmetica ']')+
 ;
 
 tipo
@@ -152,7 +152,7 @@ parcela
 ;
 
 parcela_unario
-:   '^'? identificador # parcela_unario_id
+:   op_ptr? identificador # parcela_unario_id
 |   '(' expressao ')' # parcela_unario_expr
 |   IDENT '(' expressao (','  expressao)* ')' # parcela_unario_func
 |   NUM_INT # parcela_unario_atom_int

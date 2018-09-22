@@ -1,3 +1,12 @@
-Linha 10: identificador abastecimento nao declarado
-consumo: null
+Linha 44: incompatibilidade de parametros na chamada de menorInteiro
+real real
+real inteiro
+Linha 46: incompatibilidade de parametros na chamada de menorReal
+real real
+real real
+real real
+real real
+real real
+real real
+real real
 Fim da compilacao
