@@ -9,7 +9,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   PilhaDeTabelas escopos;
   SaidaParser sp;
   HashMap<String, List<String>> tabelaDeParametros;
-  HashMap<String, List<String>> tabelaDeRegistros;
+  HashMap<String, List<EntradaTabelaDeSimbolos>> tabelaDeRegistros;
   ArrayList<String> tabelaDeTipos;
 
   public AnalisadorSemantico(SaidaParser sp) { this.sp = sp; }
@@ -65,7 +65,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
       escopos.empilhar(new TabelaDeSimbolos("global"));
       tabelaDeTipos.addAll(Arrays.asList("inteiro", "real", "literal", "logico", "registro",
-                                         "^inteiro", "^real", "^literal", "^logico", "^registro"));
+                                         "^inteiro", "^real", "^literal", "^logico"));
 
       visitDeclaracoes(ctx.declaracoes());
       visitCorpo(ctx.corpo());
@@ -169,7 +169,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitParametro (LAParser.ParametroContext ctx) {
-      /* 'var'? identificador (',' identificador)* ':' tipo_estendido */
+      /* parametro : 'var'? identificador (',' identificador)* ':' tipo_estendido */
       String tipo = visitTipo_estendido(ctx.tipo_estendido());
       if (ctx.getText().startsWith("var")) {
           tipo = "^" + tipo;
@@ -187,7 +187,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitCmdPara (LAParser.CmdParaContext ctx) {
-      /* 'para' IDENT '<-' exp_aritmetica 'ate' exp_aritmetica 'faca' (cmd)* 'fim_para' */
+      /* cmd : 'para' IDENT '<-' exp_aritmetica 'ate' exp_aritmetica 'faca' (cmd)* 'fim_para' */
       if(escopos.existeSimbolo(ctx.IDENT().getText())) {
           String tipo = escopos.getTipoSimbolo(ctx.IDENT().getText());
           for (LAParser.Exp_aritmeticaContext exp : ctx.exp_aritmetica()) {
@@ -209,12 +209,16 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitCmdAtribuicao (LAParser.CmdAtribuicaoContext ctx) {
-      /* '^'? identificador '<-' expressao */
+      /* cmd : '^'? identificador '<-' expressao */
       String tExpr, tRet;
       String tipo = visitIdentificador(ctx.identificador());
+
       String id = ctx.identificador().IDENT(0).getText();
+      for (int i = 1; i < ctx.identificador().IDENT().size(); i++){
+          id += "." + ctx.identificador().IDENT(i).getText();
+      }
       LAEnums.tipoOperacao op = LAEnums.tipoOperacao.ARITMETICA;
-      // temporario, tipos não podem ser null
+
       if (tipo != null) {
           if (tipo.startsWith("^")) op = LAEnums.tipoOperacao.PONTEIRO;
           if (ctx.op_ptr() != null) {
@@ -243,37 +247,23 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitCmdRetorne (LAParser.CmdRetorneContext ctx) {
-    if (!escopos.topo().getNome().equals("funcao")){
-      sp.println("Linha " + ctx.start.getLine() + ": comando retorne nao permitido nesse escopo");
-    }
-    return null;
-  }
-
-  @Override
-  public String visitRegistro (LAParser.RegistroContext ctx) {
-      /* 'registro' (variavel)* 'fim_registro' */
-      if (ctx.getParent().getParent() instanceof LAParser.VariavelContext) {
-          escopos.empilhar(new TabelaDeSimbolos("registro"));
-          for (LAParser.VariavelContext var : ctx.variavel()) {
-              visitVariavel(var);
-          }
-          escopos.desempilhar();
-      } else {
-          for (LAParser.VariavelContext var : ctx.variavel()) {
-              visitVariavel(var);
-          }
+      /* cmd : 'retorne' expressao */
+      if (!escopos.topo().getNome().equals("funcao")){
+          sp.println("Linha " + ctx.start.getLine() + ": comando retorne nao permitido nesse escopo");
       }
+      visitExpressao(ctx.expressao());
       return null;
   }
 
   @Override
   public String visitVariavel (LAParser.VariavelContext ctx) {
-      /* variavel: identificador (',' identificador)* ':' tipo; */
-      String tipo = ctx.tipo().getText();
+      /* variavel : identificador (',' identificador)* ':' tipo; */
+      String tipo = ctx.tipo().getText().startsWith("registro") ? "registro" : ctx.tipo().getText();
       for (LAParser.IdentificadorContext id : ctx.identificador()) {
           String var = id.getText();
           LAEnums.tipoSimbolo simbolo = LAEnums.tipoSimbolo.VARIAVEL;
 
+          // variável é um vetor
           if (id.dimensao() != null) {
               var = var.substring(0, var.indexOf('['));
               simbolo = LAEnums.tipoSimbolo.VETOR;
@@ -281,15 +271,26 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
           if (escopos.topo().existeSimbolo(var)) {
               sp.println("Linha " + id.start.getLine() + ": identificador " + id.getText() + " ja declarado anteriormente");
           } else {
-              if (ctx.tipo().registro() != null) {
-                  tabelaDeRegistros.put(var, new ArrayList<>());
+              // variável é do tipo registro
+              if (tipo.equals("registro")) {
+                  simbolo = LAEnums.tipoSimbolo.REGISTRO;
+
+                  if (tabelaDeRegistros.get(var) == null) {
+                      tabelaDeRegistros.put(var, new ArrayList<>());
+                  }
               }
-              if (escopos.topo().getNome().equals("registro")) {
-//                     var = tabelaDeRegistros.
+              // variável faz parte de um registro
+              if (escopos.topo().getNome().startsWith("registro")) {
+                  String id_reg = escopos.topo().getNome();
+                  EntradaTabelaDeSimbolos atributo = new EntradaTabelaDeSimbolos(var, tipo, simbolo);
+                  // adicionando variável à lista de atributos do registro
+                  id_reg = id_reg.substring(id_reg.indexOf("[")+1, id_reg.indexOf("]"));
+                  tabelaDeRegistros.get(id_reg).add(atributo);
               }
               escopos.topo().adicionarSimbolo(var, tipo, simbolo);
           }
       }
+      visitTipo(ctx.tipo());
       if(tabelaDeTipos.indexOf(tipo) == -1) {
           sp.println("Linha " + ctx.start.getLine() + ": tipo " + tipo + " nao declarado");
       }
@@ -297,8 +298,36 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   }
 
   @Override
+  public String visitRegistro (LAParser.RegistroContext ctx) {
+      /* registro : 'registro' (variavel)* 'fim_registro' */
+      // registro vem de uma declaração de variável
+      if (ctx.getParent().getParent() instanceof LAParser.VariavelContext) {
+          for (int i = 0; i < ((LAParser.VariavelContext) ctx.getParent().getParent()).identificador().size(); i++) {
+              // identificador de variável a qual este registro foi atribuido
+              String id_reg = ((LAParser.VariavelContext) ctx.getParent().getParent()).identificador().get(i).getText();
+              escopos.empilhar(new TabelaDeSimbolos("registro[" + id_reg + "]"));
+              for (LAParser.VariavelContext var : ctx.variavel()) {
+                  visitVariavel(var);
+              }
+              escopos.desempilhar();
+              if (tabelaDeRegistros.get(id_reg) != null) {
+                  for (EntradaTabelaDeSimbolos atrib : tabelaDeRegistros.get(id_reg)) {
+                      String id_atrib = id_reg + "." + atrib.getNome();
+                      escopos.topo().adicionarSimbolo(id_atrib, atrib.getTipo(), atrib.getSimbolo());
+                  }
+             }
+          }
+      } else { // registro vem de uma declaração de tipo
+          for (LAParser.VariavelContext var : ctx.variavel()) {
+              visitVariavel(var);
+          }
+      }
+      return "registro";
+  }
+
+  @Override
   public String visitIdentificador (LAParser.IdentificadorContext ctx) {
-      /* identificador: IDENT ('.'  IDENT)* dimensao; */
+      /* identificador : IDENT ('.'  IDENT)* dimensao; */
       String nome = ctx.IDENT().get(0).getText();
       for(int i = 1; i < ctx.IDENT().size(); i++) nome += "." + ctx.IDENT().get(i).getText();
       if(!escopos.topo().existeSimbolo(nome)) {
@@ -310,20 +339,20 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitTipo_estendido (LAParser.Tipo_estendidoContext ctx) {
-      /* op_ptr? tipo_basico_ident */
+      /* tipo_estendido : op_ptr? tipo_basico_ident */
       return ((ctx.op_ptr() != null) ? "^" : "") + visitTipo_basico_ident(ctx.tipo_basico_ident());
   }
 
   @Override
   public String visitTipo_basico_ident (LAParser.Tipo_basico_identContext ctx) {
-      /* tipo_basico_ident: tipo_basico | IDENT */
+      /* tipo_basico_ident : tipo_basico | IDENT */
       if (ctx.tipo_basico() != null) { return ctx.tipo_basico().getText(); }
       else return ctx.IDENT().getText();
   }
 
   @Override
   public String visitExpressao (LAParser.ExpressaoContext ctx) {
-      /* t1=termo_logico ('ou' t2+=termo_logico)* */
+      /* expressao : t1=termo_logico ('ou' t2+=termo_logico)* */
       String t1 = visitTermo_logico(ctx.t1);
       for (LAParser.Termo_logicoContext t : ctx.t2) {
           String t2 = visitTermo_logico(t);
@@ -334,7 +363,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitTermo_logico (LAParser.Termo_logicoContext ctx) {
-      /* f1=fator_logico ('e' f2+=fator_logico)* */
+      /* termo_logico : f1=fator_logico ('e' f2+=fator_logico)* */
       String f1 = visitFator_logico(ctx.f1);
       for (LAParser.Fator_logicoContext f : ctx.f2) {
           String f2 = visitFator_logico(f);
@@ -345,12 +374,13 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitParcela_logica_atom (LAParser.Parcela_logica_atomContext ctx) {
+      /* parcela_logica : ('verdadeiro' | 'falso') */
       return "logico";
   }
 
   @Override
   public String visitExp_relacional (LAParser.Exp_relacionalContext ctx) {
-      /* exp_aritmetica (op_relacional exp_aritmetica)? */
+      /* exp_relacional : exp_aritmetica (op_relacional exp_aritmetica)? */
       String exp1 = null;
       for(LAParser.Exp_aritmeticaContext exp : ctx.exp_aritmetica()){
           String exp2 = visitExp_aritmetica(exp);
@@ -361,7 +391,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitExp_aritmetica (LAParser.Exp_aritmeticaContext ctx) {
-      /* exp_aritmetica: termo (op1 termo)* ; */
+      /* exp_aritmetica : termo (op1 termo)* ; */
       String t1 = null;
       for(LAParser.TermoContext t : ctx.termo()){
           String t2 = visitTermo(t);
@@ -372,7 +402,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitTermo (LAParser.TermoContext ctx) {
-      /* termo: fator (op2 fator)* ; */
+      /* termo : fator (op2 fator)* ; */
       String f1 = null;
       for(LAParser.FatorContext ftr : ctx.fator()){
           String f2 = visitFator(ftr);
@@ -383,7 +413,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitFator (LAParser.FatorContext ctx){
-      /* fator: parcela (op3 parcela)? ; */
+      /* fator : parcela (op3 parcela)? ; */
       String p1 = null;
       for(LAParser.ParcelaContext pcl : ctx.parcela()){
           String p2 = visitParcela(pcl);
@@ -394,7 +424,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitParcela (LAParser.ParcelaContext ctx) {
-      /* parcela: op_unario? parcela_unario | parcela_nao_unario; */
+      /* parcela : op_unario? parcela_unario | parcela_nao_unario; */
       if (ctx.parcela_unario() != null) {
           String tp = visit(ctx.parcela_unario());
           if (ctx.op_unario() != null && !isNumerico(tp)) {
@@ -407,7 +437,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitParcela_unario_id (LAParser.Parcela_unario_idContext ctx) {
-      /* op_ptr? identificador */
+      /* parcela_unario : op_ptr? identificador */
       String tipo = visitIdentificador(ctx.identificador());
       if (ctx.op_ptr() != null) {
           if (!tipo.startsWith("^")) tipo = "^" + tipo;
@@ -417,7 +447,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitParcela_unario_func (LAParser.Parcela_unario_funcContext ctx) {
-      /* IDENT '(' expressao (','  expressao)* ')' */
+      /* parcela_unario : IDENT '(' expressao (','  expressao)* ')' */
       String nome = ctx.IDENT().getText();
 
       if(!escopos.topo().existeSimbolo(nome)) {
@@ -444,25 +474,25 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   @Override
   public String visitParcela_unario_atom_int (LAParser.Parcela_unario_atom_intContext ctx) {
-      /* NUM_INT */
+      /* parcela_unario : NUM_INT */
       return "inteiro";
   }
 
   @Override
   public String visitParcela_unario_atom_real (LAParser.Parcela_unario_atom_realContext ctx) {
-      /* NUM_REAL */
+      /* parcela_unario : NUM_REAL */
       return "real";
   }
 
   @Override
   public String visitParcela_nao_unario_id (LAParser.Parcela_nao_unario_idContext ctx) {
-      /* '&'  identificador */
+      /* parcela_nao_unario : '&'  identificador */
       return "&" + visitIdentificador(ctx.identificador());
   }
 
   @Override
   public String visitParcela_nao_unario_cad (LAParser.Parcela_nao_unario_cadContext ctx) {
-      /* CADEIA */
+      /* parcela_nao_unario : CADEIA */
       return "literal";
   }
 }
