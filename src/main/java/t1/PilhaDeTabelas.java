@@ -46,4 +46,11 @@ public class PilhaDeTabelas {
       }
       return null;
     }
+
+    public LAEnums.TipoDeDado getTipoDeDado(String nome){
+        for (TabelaDeSimbolos ts : pilha) {
+            if(ts.getTipoDeDado(nome) != null) return ts.getTipoDeDado(nome);
+        }
+        return null;
+    }
 }

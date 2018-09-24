@@ -2,9 +2,9 @@ package t1;
 
 public class EntradaTabelaDeSimbolos {
     private String nome, tipo;
-    private LAEnums.tipoSimbolo simbolo;
+    private LAEnums.TipoDeDado simbolo;
 
-    public EntradaTabelaDeSimbolos(String nome, String tipo, LAEnums.tipoSimbolo simbolo) {
+    public EntradaTabelaDeSimbolos(String nome, String tipo, LAEnums.TipoDeDado simbolo) {
         this.nome = nome;
         this.tipo = tipo;
         this.simbolo = simbolo;
@@ -18,7 +18,7 @@ public class EntradaTabelaDeSimbolos {
         return tipo;
     }
 
-    public LAEnums.tipoSimbolo getSimbolo() { return simbolo; }
+    public LAEnums.TipoDeDado getTipoDeDado() { return simbolo; }
 
     @Override
     public String toString() {

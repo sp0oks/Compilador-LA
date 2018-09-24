@@ -16,7 +16,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
   public boolean isNumerico(String tipo) { return (tipo.equals("inteiro") || tipo.equals("real")); }
 
-  public String getTipoRetorno(LAEnums.tipoOperacao op, String t1, String t2) {
+  public String isExpressaoValida(LAEnums.TipoDeOperacao op, String t1, String t2) {
       if (t1 == null) {
           return t2;
       } else if (t2 == null) {
@@ -65,7 +65,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
 
       escopos.empilhar(new TabelaDeSimbolos("global"));
       tabelaDeTipos.addAll(Arrays.asList("inteiro", "real", "literal", "logico", "registro",
-                                         "^inteiro", "^real", "^literal", "^logico"));
+                                         "vazio", "^inteiro", "^real", "^literal", "^logico"));
 
       visitDeclaracoes(ctx.declaracoes());
       visitCorpo(ctx.corpo());
@@ -80,7 +80,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
           sp.println("Linha " + ctx.start.getLine() + ": identificador " + ctx.IDENT().getText() + " ja declarado anteriormente");
       } else {
           String tipo = visitTipo_basico(ctx.tipo_basico());
-          escopos.topo().adicionarSimbolo(id, tipo, LAEnums.tipoSimbolo.CONSTANTE);
+          escopos.topo().adicionarSimbolo(id, tipo, LAEnums.TipoDeDado.CONSTANTE);
       }
       return null;
   }
@@ -94,9 +94,9 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
           sp.println("Linha " + ctx.start.getLine() + ": identificador " + id + " ja declarado anteriormente");
       } else {
           if (ctx.tipo().registro() != null) {
-              escopos.topo().adicionarSimbolo(id, "registro", LAEnums.tipoSimbolo.REGISTRO);
+              escopos.topo().adicionarSimbolo(id, "registro", LAEnums.TipoDeDado.REGISTRO);
               tabelaDeRegistros.put(id, new ArrayList<>());
-          } else { escopos.topo().adicionarSimbolo(id, "tipo", LAEnums.tipoSimbolo.TIPO); }
+          } else { escopos.topo().adicionarSimbolo(id, "tipo", LAEnums.TipoDeDado.TIPO); }
           tabelaDeTipos.add(id);
           if (!id.startsWith("^")) {
               tabelaDeTipos.add("^" + ctx.IDENT().getText());
@@ -112,7 +112,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       if(escopos.topo().existeSimbolo(ctx.IDENT().getText())) {
           sp.println("Linha " + ctx.start.getLine() + ": identificador " + ctx.IDENT().getText() + " ja declarado anteriormente");
       } else {
-          escopos.topo().adicionarSimbolo(ctx.IDENT().getText(), "vazio", LAEnums.tipoSimbolo.FUNCAO);
+          escopos.topo().adicionarSimbolo(ctx.IDENT().getText(), "vazio", LAEnums.TipoDeDado.FUNCAO);
           tabelaDeParametros.put(ctx.IDENT().getText(), new ArrayList<>());
           escopos.empilhar(new TabelaDeSimbolos("procedimento"));
           if (ctx.parametros() != null) {
@@ -143,7 +143,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
           sp.println("Linha " + ctx.start.getLine() + ": identificador " + ctx.IDENT().getText() + " ja declarado anteriormente");
       } else {
           String tipo = visitTipo_estendido(ctx.tipo_estendido());
-          escopos.topo().adicionarSimbolo(ctx.IDENT().getText(), tipo, LAEnums.tipoSimbolo.FUNCAO);
+          escopos.topo().adicionarSimbolo(ctx.IDENT().getText(), tipo, LAEnums.TipoDeDado.FUNCAO);
           tabelaDeParametros.put(ctx.IDENT().getText(), new ArrayList<>());
           escopos.empilhar(new TabelaDeSimbolos("funcao"));
           if (ctx.parametros() != null) {
@@ -171,15 +171,27 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   public String visitParametro (LAParser.ParametroContext ctx) {
       /* parametro : 'var'? identificador (',' identificador)* ':' tipo_estendido */
       String tipo = visitTipo_estendido(ctx.tipo_estendido());
-      if (ctx.getText().startsWith("var")) {
-          tipo = "^" + tipo;
-      }
+      LAEnums.TipoDeDado tDado = LAEnums.TipoDeDado.REGISTRO;
+
+      if (escopos.getTipoDeDado(tipo) != LAEnums.TipoDeDado.REGISTRO)
+          tDado = LAEnums.TipoDeDado.VARIAVEL;
+// usar isso no gerador de código
+//      if (ctx.getText().startsWith("var")) {
+//          tipo = "^" + tipo;
+//      }
       for (LAParser.IdentificadorContext id : ctx.identificador()) {
           if (escopos.topo().existeSimbolo(id.getText())) {
               sp.println("Linha " + id.start.getLine() + ": identificador " + id.getText() + " ja declarado anteriormente");
           } else {
-              escopos.topo().adicionarSimbolo(id.getText(), tipo, LAEnums.tipoSimbolo.VARIAVEL);
+              escopos.topo().adicionarSimbolo(id.getText(), tipo, tDado);
               visitIdentificador(id);
+              // Se o parâmetro for um registro, adicionar também os atributos deste ao escopo
+              if (tDado == LAEnums.TipoDeDado.REGISTRO) {
+                  for (int i = 0; i < tabelaDeRegistros.get(tipo).size(); i++) {
+                      EntradaTabelaDeSimbolos atributo = tabelaDeRegistros.get(tipo).get(i);
+                      escopos.topo().adicionarSimbolo(id.getText() + "." + atributo.getNome(), atributo.getTipo(), atributo.getTipoDeDado());
+                  }
+              }
           }
       }
       return tipo;
@@ -191,7 +203,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       if(escopos.existeSimbolo(ctx.IDENT().getText())) {
           String tipo = escopos.getTipoSimbolo(ctx.IDENT().getText());
           for (LAParser.Exp_aritmeticaContext exp : ctx.exp_aritmetica()) {
-              tipo = getTipoRetorno(LAEnums.tipoOperacao.ARITMETICA, tipo, visitExp_aritmetica(exp));
+              tipo = isExpressaoValida(LAEnums.TipoDeOperacao.ARITMETICA, tipo, visitExp_aritmetica(exp));
           }
           if (tipo.equals("tipo_invalido")) {
               sp.println("Linha " + ctx.start.getLine() + ": atribuicao nao compativel para " + ctx.IDENT().getText());
@@ -217,22 +229,25 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       for (int i = 1; i < ctx.identificador().IDENT().size(); i++){
           id += "." + ctx.identificador().IDENT(i).getText();
       }
-      LAEnums.tipoOperacao op = LAEnums.tipoOperacao.ARITMETICA;
+      LAEnums.TipoDeOperacao op = LAEnums.TipoDeOperacao.ARITMETICA;
 
       if (tipo != null) {
-          if (tipo.startsWith("^")) op = LAEnums.tipoOperacao.PONTEIRO;
+          if (tipo.startsWith("^")) op = LAEnums.TipoDeOperacao.PONTEIRO;
           if (ctx.op_ptr() != null) {
               id = "^" + id;
               if (!tipo.startsWith("^")) {
                   tipo = "^" + visitIdentificador(ctx.identificador());
-                  op = LAEnums.tipoOperacao.PONTEIRO;
+                  op = LAEnums.TipoDeOperacao.PONTEIRO;
               }
           } else {
-              if (tipo.equals("logico")) op = LAEnums.tipoOperacao.LOGICA;
+              if (tipo.equals("logico")) { op = LAEnums.TipoDeOperacao.LOGICA; }
+              else if (escopos.topo().getTipoDeDado(tipo) == LAEnums.TipoDeDado.REGISTRO) {
+                  op = LAEnums.TipoDeOperacao.REGISTRO;
+              }
           }
       }
       tExpr = visitExpressao(ctx.expressao());
-      tRet = getTipoRetorno(op, tipo, tExpr);
+      tRet = isExpressaoValida(op, tipo, tExpr);
 
       if (tRet != null && tRet.equals("tipo_invalido")) {
           if (ctx.identificador().dimensao() != null) {
@@ -261,35 +276,44 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       String tipo = ctx.tipo().getText().startsWith("registro") ? "registro" : ctx.tipo().getText();
       for (LAParser.IdentificadorContext id : ctx.identificador()) {
           String var = id.getText();
-          LAEnums.tipoSimbolo simbolo = LAEnums.tipoSimbolo.VARIAVEL;
+          LAEnums.TipoDeDado simbolo = LAEnums.TipoDeDado.VARIAVEL;
 
           // variável é um vetor
           if (id.dimensao() != null) {
               var = var.substring(0, var.indexOf('['));
-              simbolo = LAEnums.tipoSimbolo.VETOR;
+              simbolo = LAEnums.TipoDeDado.VETOR;
           }
           if (escopos.topo().existeSimbolo(var)) {
               sp.println("Linha " + id.start.getLine() + ": identificador " + id.getText() + " ja declarado anteriormente");
           } else {
-              // variável é do tipo registro
-              if (tipo.equals("registro")) {
-                  simbolo = LAEnums.tipoSimbolo.REGISTRO;
+                  // variável é um registro sem nome
+                  if (tipo.equals("registro")) {
+                      simbolo = LAEnums.TipoDeDado.REGISTRO;
 
-                  if (tabelaDeRegistros.get(var) == null) {
-                      tabelaDeRegistros.put(var, new ArrayList<>());
+                      if (tabelaDeRegistros.get(var) == null) {
+                          tabelaDeRegistros.put(var, new ArrayList<>());
+                      }
+                  }
+                  // variável é atributo de um registro
+                  if (escopos.topo().getNome().startsWith("registro")) {
+                      String id_reg = escopos.topo().getNome();
+                      EntradaTabelaDeSimbolos atributo = new EntradaTabelaDeSimbolos(var, tipo, simbolo);
+                      // adicionando variável à lista de atributos do registro
+                      id_reg = id_reg.substring(id_reg.indexOf("[") + 1, id_reg.indexOf("]"));
+                      tabelaDeRegistros.get(id_reg).add(atributo);
+                  }
+                  escopos.topo().adicionarSimbolo(var, tipo, simbolo);
+
+                  // variável é de um tipo registro declarado anteriormente
+                  if (escopos.topo().existeSimbolo(tipo) && escopos.topo().getTipoSimbolo(tipo).equals("registro")) {
+                      for (int i = 0; i < tabelaDeRegistros.get(tipo).size(); i++) {
+                          // adicionamos todos os atributos deste tipo à nova variavel
+                          EntradaTabelaDeSimbolos atributo = tabelaDeRegistros.get(tipo).get(i);
+                          escopos.topo().adicionarSimbolo(var + "." + atributo.getNome(), atributo.getTipo(), atributo.getTipoDeDado());
+                      }
                   }
               }
-              // variável faz parte de um registro
-              if (escopos.topo().getNome().startsWith("registro")) {
-                  String id_reg = escopos.topo().getNome();
-                  EntradaTabelaDeSimbolos atributo = new EntradaTabelaDeSimbolos(var, tipo, simbolo);
-                  // adicionando variável à lista de atributos do registro
-                  id_reg = id_reg.substring(id_reg.indexOf("[")+1, id_reg.indexOf("]"));
-                  tabelaDeRegistros.get(id_reg).add(atributo);
-              }
-              escopos.topo().adicionarSimbolo(var, tipo, simbolo);
           }
-      }
       visitTipo(ctx.tipo());
       if(tabelaDeTipos.indexOf(tipo) == -1) {
           sp.println("Linha " + ctx.start.getLine() + ": tipo " + tipo + " nao declarado");
@@ -300,11 +324,13 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
   @Override
   public String visitRegistro (LAParser.RegistroContext ctx) {
       /* registro : 'registro' (variavel)* 'fim_registro' */
+      String id_reg;
+
       // registro vem de uma declaração de variável
       if (ctx.getParent().getParent() instanceof LAParser.VariavelContext) {
           for (int i = 0; i < ((LAParser.VariavelContext) ctx.getParent().getParent()).identificador().size(); i++) {
               // identificador de variável a qual este registro foi atribuido
-              String id_reg = ((LAParser.VariavelContext) ctx.getParent().getParent()).identificador().get(i).getText();
+              id_reg = ((LAParser.VariavelContext) ctx.getParent().getParent()).identificador().get(i).getText();
               escopos.empilhar(new TabelaDeSimbolos("registro[" + id_reg + "]"));
               for (LAParser.VariavelContext var : ctx.variavel()) {
                   visitVariavel(var);
@@ -313,14 +339,19 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
               if (tabelaDeRegistros.get(id_reg) != null) {
                   for (EntradaTabelaDeSimbolos atrib : tabelaDeRegistros.get(id_reg)) {
                       String id_atrib = id_reg + "." + atrib.getNome();
-                      escopos.topo().adicionarSimbolo(id_atrib, atrib.getTipo(), atrib.getSimbolo());
+                      escopos.topo().adicionarSimbolo(id_atrib, atrib.getTipo(), atrib.getTipoDeDado());
                   }
              }
           }
-      } else { // registro vem de uma declaração de tipo
+      }
+      // registro vem de uma declaração de tipo
+      else if (ctx.getParent().getParent() instanceof LAParser.Declaracao_local_tipoContext){
+          id_reg = ((LAParser.Declaracao_local_tipoContext) ctx.getParent().getParent()).IDENT().getText();
+          escopos.empilhar(new TabelaDeSimbolos("registro[" + id_reg + "]"));
           for (LAParser.VariavelContext var : ctx.variavel()) {
               visitVariavel(var);
           }
+          escopos.desempilhar();
       }
       return "registro";
   }
@@ -356,7 +387,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       String t1 = visitTermo_logico(ctx.t1);
       for (LAParser.Termo_logicoContext t : ctx.t2) {
           String t2 = visitTermo_logico(t);
-          t1 = getTipoRetorno(LAEnums.tipoOperacao.LOGICA, t1, t2);
+          t1 = isExpressaoValida(LAEnums.TipoDeOperacao.LOGICA, t1, t2);
       }
       return t1;
   }
@@ -367,7 +398,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       String f1 = visitFator_logico(ctx.f1);
       for (LAParser.Fator_logicoContext f : ctx.f2) {
           String f2 = visitFator_logico(f);
-          f1 = getTipoRetorno(LAEnums.tipoOperacao.LOGICA, f1, f2);
+          f1 = isExpressaoValida(LAEnums.TipoDeOperacao.LOGICA, f1, f2);
       }
       return f1;
   }
@@ -384,7 +415,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       String exp1 = null;
       for(LAParser.Exp_aritmeticaContext exp : ctx.exp_aritmetica()){
           String exp2 = visitExp_aritmetica(exp);
-          exp1 = getTipoRetorno(LAEnums.tipoOperacao.RELACIONAL, exp1, exp2);
+          exp1 = isExpressaoValida(LAEnums.TipoDeOperacao.RELACIONAL, exp1, exp2);
       }
       return exp1;
   }
@@ -395,7 +426,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       String t1 = null;
       for(LAParser.TermoContext t : ctx.termo()){
           String t2 = visitTermo(t);
-          t1 = getTipoRetorno(LAEnums.tipoOperacao.ARITMETICA, t1, t2);
+          t1 = isExpressaoValida(LAEnums.TipoDeOperacao.ARITMETICA, t1, t2);
       }
       return t1;
   }
@@ -406,7 +437,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       String f1 = null;
       for(LAParser.FatorContext ftr : ctx.fator()){
           String f2 = visitFator(ftr);
-          f1 = getTipoRetorno(LAEnums.tipoOperacao.ARITMETICA, f1, f2);
+          f1 = isExpressaoValida(LAEnums.TipoDeOperacao.ARITMETICA, f1, f2);
       }
       return f1;
   }
@@ -417,7 +448,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       String p1 = null;
       for(LAParser.ParcelaContext pcl : ctx.parcela()){
           String p2 = visitParcela(pcl);
-          p1 = getTipoRetorno(LAEnums.tipoOperacao.ARITMETICA, p1, p2);
+          p1 = isExpressaoValida(LAEnums.TipoDeOperacao.ARITMETICA, p1, p2);
       }
       return p1;
   }
@@ -469,7 +500,7 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
               sp.println("Linha " + ctx.start.getLine() + ": incompatibilidade de parametros na chamada de " + nome);
           }
       }
-      return escopos.topo().getTipoSimbolo(nome);
+      return escopos.getTipoSimbolo(nome);
   }
 
   @Override
