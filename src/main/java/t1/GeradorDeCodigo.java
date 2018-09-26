@@ -1,5 +1,7 @@
 package t1;
 
+import java.lang.annotation.Documented;
+
 public class GeradorDeCodigo extends LABaseVisitor<String> {
     SaidaParser sp;
     PilhaDeTabelas escopos;
@@ -46,6 +48,11 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
         String tipo = ctx.tipo().getText();
         boolean primeiro = true;
         boolean string = false;
+        boolean ponteiro = false;
+        if (tipo.startsWith("^")) {
+            ponteiro = true;
+            tipo = tipo.substring(tipo.indexOf("^")+1);
+        }
         if(tipo != null){
             switch (tipo) {
             case "inteiro":
@@ -67,9 +74,10 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
         }
         for (LAParser.IdentificadorContext id : ctx.identificador()) {
           escopos.topo().adicionarSimbolo(id.getText(), tipo, LAEnums.TipoDeDado.VARIAVEL);
-          if(!primeiro) sp.print(", ");
+          if(!primeiro) { sp.print(", "); }
+          if(ponteiro) { sp.print("*"); }
           sp.print(id.getText());
-          if(string) sp.print("[256]");
+          if(string) { sp.print("[256]"); }
           primeiro = false;
         }
         sp.println(";");
@@ -82,7 +90,7 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
         String nome = ctx.IDENT().get(0).getText();
         for(int i = 1; i < ctx.IDENT().size(); i++) nome += "." + ctx.IDENT().get(i).getText();
         if (ctx.dimensao() != null) { visitDimensao(ctx.dimensao()); }
-       return escopos.getTipoSimbolo(nome);
+        return escopos.getTipoSimbolo(nome);
     }
 
     @Override
@@ -122,11 +130,11 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
         String arg = "";
         String var = "";
         String strg = "";
-        for (LAParser.ExpressaoContext id : ctx.expressao()) {
-          String tipo = visitExpressao(id);
+        for (LAParser.ExpressaoContext exp : ctx.expressao()) {
+          String tipo = visitExpressao(exp);
 
-          if(id.getText().startsWith("\"")) {
-            strg = id.getText().substring(1, id.getText().length()-1); //Tira as aspas da string
+          if(exp.getText().startsWith("\"")) {
+            strg = exp.getText().substring(1, exp.getText().length()-1); //Tira as aspas da string
           }
 
           if(tipo != null){
@@ -135,8 +143,10 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
                   arg += "%d";
                   break;
                 case "literal":
-                  if(!id.getText().startsWith("\"")) {
-                    arg += "%s";
+                  if(!exp.getText().startsWith("\"")) {
+                      arg += "%s";
+                  } else {
+                      arg += strg;
                   }
                   break;
                 case "real":
@@ -148,37 +158,110 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
                 default:
                   break;
                 }
-                if(!id.getText().startsWith("\"")) {
-                  var += "," + id.getText();
+                if(!exp.getText().startsWith("\"")) {
+                  var += "," + exp.getText();
                 }
           }
         }
-        sp.println("printf(\"" + strg + " " + arg + "\"" + var + ");");
+        sp.println("printf(\"" + arg + "\"" + var + ");");
         return null;
     }
 
     @Override
     public String visitCmdAtribuicao (LAParser.CmdAtribuicaoContext ctx) {
         /* op_ptr? identificador '<-' expressao   # cmdAtribuicao */
-        sp.println(ctx.identificador().getText() + " = " + ctx.expressao().getText() + ";");
+        String id = (ctx.op_ptr() == null) ? "" : "*";
+        id += ctx.identificador().getText();
+        sp.println(id + " = " + ctx.expressao().getText() + ";");
         return null;
     }
 
     @Override
     public String visitCmdSe (LAParser.CmdSeContext ctx) {
-        /* 'se' expressao 'entao' (cmd)* ('senao' (cmd)*)? 'fim_se'    # cmdSe */
-        sp.println("if(" + ctx.expressao().getText() + ") {");
-        for (LAParser.CmdContext id : ctx.cmd()) {
-            //String oi = visitCmd(id);
+        /* 'se' expressao 'entao' (cmdIf+=cmd)* (opElse='senao' (cmdElse+=cmd)*)? 'fim_se'    # cmdSe */
+        sp.print("if(");
+        visitExpressao(ctx.expressao());
+        sp.println(") {");
+        for (LAParser.CmdContext cmd : ctx.cmdIf) {
+            visit(cmd);
         }
         sp.println("}");
+        if (ctx.opElse != null) {
+            sp.println("else {");
+            for (LAParser.CmdContext cmd : ctx.cmdElse) {
+                visit(cmd);
+            }
+            sp.println("}");
+        }
         return null;
+    }
+
+    @Override
+    public String visitCmdCaso (LAParser.CmdCasoContext ctx) {
+        return null;
+    }
+
+    @Override
+    public String visitCmdPara (LAParser.CmdParaContext ctx) {
+        return null;
+    }
+
+    @Override
+    public String visitExpressao (LAParser.ExpressaoContext ctx) {
+        /* t1=termo_logico ('ou' t2+=termo_logico)* */
+        String tipo = visitTermo_logico(ctx.t1);
+        for (LAParser.Termo_logicoContext trm : ctx.t2) {
+            sp.print(" || ");
+            visitTermo_logico(trm);
+        }
+        return tipo;
+    }
+
+    @Override
+    public String visitTermo_logico (LAParser.Termo_logicoContext ctx) {
+        /* f1=fator_logico ('e' f2+=fator_logico)* */
+        String tipo = visitFator_logico(ctx.f1);
+        for (LAParser.Fator_logicoContext ftr : ctx.f2) {
+            sp.print(" && ");
+            visitFator_logico(ftr);
+        }
+        return tipo;
+    }
+
+    @Override
+    public String visitFator_logico (LAParser.Fator_logicoContext ctx) {
+        /* 'nao'? parcela_logica */
+        if (ctx.getText().startsWith("nao")) { sp.print("!"); }
+        String tipo = visit(ctx.parcela_logica());
+        return tipo;
+    }
+
+    @Override
+    public String visitExp_relacional (LAParser.Exp_relacionalContext ctx) {
+        /* exp_aritmetica (op_relacional exp_aritmetica)? */
+        String tipo = visitExp_aritmetica(ctx.exp_aritmetica(0));
+        if (ctx.op_relacional() != null) {
+            sp.print(ctx.exp_aritmetica(0).getText());
+            String op = ctx.op_relacional().getText();
+            if (op.equals("=")) { op = "=="; }
+            else if (op.equals("<>")) { op = "!="; }
+            sp.print(op);
+            visitExp_aritmetica(ctx.exp_aritmetica(1));
+            sp.print(ctx.exp_aritmetica(1).getText());
+        }
+        return tipo;
     }
 
     @Override
     public String visitTipo_estendido (LAParser.Tipo_estendidoContext ctx) {
         /* tipo_estendido : op_ptr? tipo_basico_ident */
         return ((ctx.op_ptr() != null) ? "^" : "") + visitTipo_basico_ident(ctx.tipo_basico_ident());
+    }
+
+    @Override
+    public String visitParcela_logica_atom (LAParser.Parcela_logica_atomContext ctx) {
+        /* parcela_logica : ('verdadeiro' | 'falso') */
+        return "logico";
     }
 
     @Override
@@ -191,12 +274,6 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
     public String visitParcela_nao_unario_cad (LAParser.Parcela_nao_unario_cadContext ctx) {
         /* parcela_nao_unario : CADEIA */
         return "literal";
-    }
-
-    @Override
-    public String visitParcela_logica_atom (LAParser.Parcela_logica_atomContext ctx) {
-        /* parcela_logica : ('verdadeiro' | 'falso') */
-        return "logico";
     }
 
     @Override

@@ -30,15 +30,23 @@ task testParser(type: Exec) {
 
 task testSemantic(type: Exec) {
     dependsOn('fatJar')
-    description = 'Tests semantic analyzer execution.'
+    description = 'Tests semantic analysis.'
     executable = "java"
     args  = ["-jar", "${rootDir}/libs/CorretorTrabalho1.jar", "java -jar ${rootDir}/build/libs/cla.jar", 'gcc',
 	     "${testResultsDir}/semantico", "${rootDir}/src/test/casosDeTesteT1/", "G12", 'semantico']
 }
 
+task testCodeGen(type: Exec) {
+    dependsOn('fatJar')
+    description = 'Tests code generation.'
+    executable = "java"
+    args  = ["-jar", "${rootDir}/libs/CorretorTrabalho1.jar", "java -jar ${rootDir}/build/libs/cla.jar", 'gcc',
+	     "${testResultsDir}/geracao", "${rootDir}/src/test/casosDeTesteT1/", "G12", 'gerador']
+}
+
 task testCompiler(type: Exec) {
     dependsOn('fatJar')
-    description = 'Tests semantic analyzer execution.'
+    description = 'Tests the entire compiler execution.'
     executable = "java"
     args  = ["-jar", "${rootDir}/libs/CorretorTrabalho1.jar", "java -jar ${rootDir}/build/libs/cla.jar", 'gcc',
              "${testResultsDir}/", "${rootDir}/src/test/casosDeTesteT1/", "G12", 'tudo']

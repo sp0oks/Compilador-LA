@@ -232,14 +232,14 @@ public class AnalisadorSemantico extends LABaseVisitor<String> {
       LAEnums.TipoDeOperacao op = LAEnums.TipoDeOperacao.ARITMETICA;
 
       if (tipo != null) {
-          if (tipo.startsWith("^")) op = LAEnums.TipoDeOperacao.PONTEIRO;
           if (ctx.op_ptr() != null) {
               id = "^" + id;
               if (!tipo.startsWith("^")) {
-                  tipo = "^" + visitIdentificador(ctx.identificador());
+                  tipo = "^" + tipo;
                   op = LAEnums.TipoDeOperacao.PONTEIRO;
-              }
+              } else { tipo = tipo.substring(tipo.indexOf("^")+1); }
           } else {
+              if (tipo.startsWith("^")) { op = LAEnums.TipoDeOperacao.PONTEIRO; }
               if (tipo.equals("logico")) { op = LAEnums.TipoDeOperacao.LOGICA; }
               else if (escopos.topo().getTipoDeDado(tipo) == LAEnums.TipoDeDado.REGISTRO) {
                   op = LAEnums.TipoDeOperacao.REGISTRO;

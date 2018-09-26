@@ -1,18 +1,13 @@
-// Generated from C:/Users/Gabriel/IdeaProjects/Compilador-LA/src/main/java\LA.g4 by ANTLR 4.7
+// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/LA.g4 by ANTLR 4.7
 package t1;
-
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.atn.ATN;
-import org.antlr.v4.runtime.atn.ATNDeserializer;
-import org.antlr.v4.runtime.atn.ParserATNSimulator;
-import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
-import org.antlr.v4.runtime.tree.ParseTreeListener;
-import org.antlr.v4.runtime.tree.ParseTreeVisitor;
-import org.antlr.v4.runtime.tree.TerminalNode;
-
-import java.util.ArrayList;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
+import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class LAParser extends Parser {
@@ -1573,6 +1568,10 @@ public class LAParser extends Parser {
 		}
 	}
 	public static class CmdSeContext extends CmdContext {
+		public CmdContext cmd;
+		public List<CmdContext> cmdIf = new ArrayList<CmdContext>();
+		public Token opElse;
+		public List<CmdContext> cmdElse = new ArrayList<CmdContext>();
 		public ExpressaoContext expressao() {
 			return getRuleContext(ExpressaoContext.class,0);
 		}
@@ -1794,7 +1793,8 @@ public class LAParser extends Parser {
 					{
 					{
 					setState(273);
-					cmd();
+					((CmdSeContext)_localctx).cmd = cmd();
+					((CmdSeContext)_localctx).cmdIf.add(((CmdSeContext)_localctx).cmd);
 					}
 					}
 					setState(278);
@@ -1807,7 +1807,7 @@ public class LAParser extends Parser {
 				if (_la==T__31) {
 					{
 					setState(279);
-					match(T__31);
+					((CmdSeContext)_localctx).opElse = match(T__31);
 					setState(283);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
@@ -1815,7 +1815,8 @@ public class LAParser extends Parser {
 						{
 						{
 						setState(280);
-						cmd();
+						((CmdSeContext)_localctx).cmd = cmd();
+						((CmdSeContext)_localctx).cmdElse.add(((CmdSeContext)_localctx).cmd);
 						}
 						}
 						setState(285);
