@@ -33,6 +33,7 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
         String id = ctx.IDENT().getText();
         String valor = ctx.valor_constante().getText();
         sp.println("#define " + id + " " + valor);
+        sp.println("");
         return null;
     }
 
@@ -178,6 +179,51 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
         }
         sp.println("}");
         return null;
+    }
+
+    @Override
+    public String visitCmdCaso (LAParser.CmdCasoContext ctx) {
+        /* 'caso' exp_aritmetica 'seja' selecao ('senao' (cmd)*)? 'fim_caso'   # cmdCaso */
+        sp.println("switch(" + expressao2C(ctx.exp_aritmetica().getText()) + ") {");
+        for (LAParser.Item_selecaoContext item : ctx.selecao().item_selecao()) {
+          visitItem_selecao(item);
+        }
+        sp.println("default:");
+        for (LAParser.CmdContext cmd : ctx.cmd()) {
+            visit(cmd);
+        }
+        sp.println("}");
+        return null;
+    }
+
+    @Override
+    public String visitItem_selecao (LAParser.Item_selecaoContext ctx) {
+        /* constantes ':'  (cmd)* */
+        for (LAParser.Numero_intervaloContext cons : ctx.constantes().numero_intervalo()) {
+            visitNumero_intervalo(cons);
+        }
+
+        for (LAParser.CmdContext cmd : ctx.cmd()) {
+            visit(cmd);
+        }
+        sp.println("break;");
+        return null;
+    }
+
+    @Override
+    public String visitNumero_intervalo (LAParser.Numero_intervaloContext ctx) {
+      /* op_unario? NUM_INT ('..'  op_unario? NUM_INT)? */
+      int a = Integer.parseInt(ctx.NUM_INT().get(0).getText());
+      int b = a;
+      if(ctx.NUM_INT().size() > 1) b = Integer.parseInt(ctx.NUM_INT().get(1).getText());;
+      while(a <= b){
+        sp.print("case ");
+        sp.println(a + ":");
+        a++;
+      }
+      String num = ctx.NUM_INT().toString();
+
+      return null;
     }
 
     @Override
