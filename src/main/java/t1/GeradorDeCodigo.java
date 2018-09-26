@@ -160,8 +160,18 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
     @Override
     public String visitCmdAtribuicao (LAParser.CmdAtribuicaoContext ctx) {
         /* op_ptr? identificador '<-' expressao   # cmdAtribuicao */
-        String tipo = visitExpressao(ctx.expressao());
         sp.println(ctx.identificador().getText() + " = " + ctx.expressao().getText() + ";");
+        return null;
+    }
+
+    @Override
+    public String visitCmdSe (LAParser.CmdSeContext ctx) {
+        /* 'se' expressao 'entao' (cmd)* ('senao' (cmd)*)? 'fim_se'    # cmdSe */
+        sp.println("if(" + ctx.expressao().getText() + ") {");
+        for (LAParser.CmdContext id : ctx.cmd()) {
+            //String oi = visitCmd(id);
+        }
+        sp.println("}");
         return null;
     }
 
