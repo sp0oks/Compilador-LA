@@ -40,8 +40,11 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
     public String visitDeclaracao_local_tipo (LAParser.Declaracao_local_tipoContext ctx) {
         /* 'tipo'  IDENT ':' tipo # declaracao_local_tipo */
         String id = ctx.IDENT().getText();
-        String tipo = ctx.tipo().getText();
-        sp.println("typedef " + id + " " + tipo);
+        String tipo = (ctx.tipo().getText().startsWith("registro")) ? "struct" : "";
+        sp.println("typedef " + tipo + " {");
+        visitTipo(ctx.tipo());
+        sp.println("} " + id + ";");
+        escopos.topo().adicionarSimbolo(id, "tipo", LAEnums.TipoDeDado.TIPO);
         return null;
     }
 
@@ -72,6 +75,7 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
               sp.print("int ");
               break;
             default:
+              sp.print(tipo + " ");
               break;
             }
         }
