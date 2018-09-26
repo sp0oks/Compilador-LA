@@ -1,11 +1,14 @@
 package t1;
 
-import java.lang.annotation.Documented;
-
 public class GeradorDeCodigo extends LABaseVisitor<String> {
     SaidaParser sp;
     PilhaDeTabelas escopos;
     public GeradorDeCodigo(SaidaParser sp) { this.sp = sp; }
+
+    public String expressao2C (String exp) {
+      System.out.println(exp);
+      return exp.replaceAll("ou", " || ").replaceAll("e", " && ").replaceAll("nao ", "!").replaceAll("=", "==").replaceAll("<>", "!=").replaceAll(">==", ">=").replaceAll("<==", "<=");
+    }
 
     @Override
     public String visitPrograma (LAParser.ProgramaContext ctx) {
@@ -256,12 +259,6 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
     public String visitTipo_estendido (LAParser.Tipo_estendidoContext ctx) {
         /* tipo_estendido : op_ptr? tipo_basico_ident */
         return ((ctx.op_ptr() != null) ? "^" : "") + visitTipo_basico_ident(ctx.tipo_basico_ident());
-    }
-
-    @Override
-    public String visitParcela_logica_atom (LAParser.Parcela_logica_atomContext ctx) {
-        /* parcela_logica : ('verdadeiro' | 'falso') */
-        return "logico";
     }
 
     @Override
