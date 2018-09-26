@@ -5,6 +5,11 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
     PilhaDeTabelas escopos;
     public GeradorDeCodigo(SaidaParser sp) { this.sp = sp; }
 
+    public String expressao2C (String exp) {
+      System.out.println(exp);
+      return exp.replaceAll("ou", " || ").replaceAll("e", " && ").replaceAll("nao ", "!").replaceAll("=", "==").replaceAll("<>", "!=").replaceAll(">==", ">=").replaceAll("<==", "<=");
+    }
+
     @Override
     public String visitPrograma (LAParser.ProgramaContext ctx) {
         /* programa: declaracoes 'algoritmo' corpo 'fim_algoritmo'; */
@@ -122,11 +127,11 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
         String arg = "";
         String var = "";
         String strg = "";
-        for (LAParser.ExpressaoContext id : ctx.expressao()) {
-          String tipo = visitExpressao(id);
+        for (LAParser.ExpressaoContext exp : ctx.expressao()) {
+          String tipo = visitExpressao(exp);
 
-          if(id.getText().startsWith("\"")) {
-            strg = id.getText().substring(1, id.getText().length()-1); //Tira as aspas da string
+          if(exp.getText().startsWith("\"")) {
+            strg = exp.getText().substring(1, exp.getText().length()-1); //Tira as aspas da string
           }
 
           if(tipo != null){
@@ -135,7 +140,7 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
                   arg += "%d";
                   break;
                 case "literal":
-                  if(!id.getText().startsWith("\"")) {
+                  if(!exp.getText().startsWith("\"")) {
                     arg += "%s";
                   }
                   break;
@@ -148,8 +153,8 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
                 default:
                   break;
                 }
-                if(!id.getText().startsWith("\"")) {
-                  var += "," + id.getText();
+                if(!exp.getText().startsWith("\"")) {
+                  var += "," + exp.getText();
                 }
           }
         }
@@ -160,16 +165,16 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
     @Override
     public String visitCmdAtribuicao (LAParser.CmdAtribuicaoContext ctx) {
         /* op_ptr? identificador '<-' expressao   # cmdAtribuicao */
-        sp.println(ctx.identificador().getText() + " = " + ctx.expressao().getText() + ";");
+        sp.println(ctx.identificador().getText() + " = " + expressao2C(ctx.expressao().getText()) + ";");
         return null;
     }
 
     @Override
     public String visitCmdSe (LAParser.CmdSeContext ctx) {
         /* 'se' expressao 'entao' (cmd)* ('senao' (cmd)*)? 'fim_se'    # cmdSe */
-        sp.println("if(" + ctx.expressao().getText() + ") {");
-        for (LAParser.CmdContext id : ctx.cmd()) {
-            //String oi = visitCmd(id);
+        sp.println("if(" + expressao2C(ctx.expressao().getText()) + ") {");
+        for (LAParser.CmdContext cmd : ctx.cmd()) {
+            visit(cmd);
         }
         sp.println("}");
         return null;
