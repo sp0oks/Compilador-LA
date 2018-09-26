@@ -5,7 +5,6 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
     PilhaDeTabelas escopos;
     public GeradorDeCodigo(SaidaParser sp) { this.sp = sp; }
 
-
     @Override
     public String visitPrograma (LAParser.ProgramaContext ctx) {
         /* programa: declaracoes 'algoritmo' corpo 'fim_algoritmo'; */
@@ -45,22 +44,46 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
         /* identificador (',' identificador)* ':' tipo */
         String tipo = ctx.tipo().getText();
         boolean primeiro = true;
+        boolean string = false;
         if(tipo != null){
-          switch (tipo) {
+            switch (tipo) {
             case "inteiro":
               sp.print("int ");
               break;
-          }
+            case "real":
+              sp.print("double ");
+              break;
+            case "literal":
+              sp.print("char ");
+              string = true;
+              break;
+            case "logico":
+              sp.print("int ");
+              break;
+            default:
+              break;
+            }
         }
         for (LAParser.IdentificadorContext id : ctx.identificador()) {
+          escopos.topo().adicionarSimbolo(id.getText(), tipo, LAEnums.TipoDeDado.VARIAVEL);
           if(!primeiro) sp.print(", ");
           sp.print(id.getText());
+          if(string) sp.print("[256]");
           primeiro = false;
         }
         sp.println(";");
         return null;
     }
 
+    @Override
+    public String visitIdentificador (LAParser.IdentificadorContext ctx) {
+        /* identificador : IDENT ('.'  IDENT)* dimensao; */
+        String nome = ctx.IDENT().get(0).getText();
+        for(int i = 1; i < ctx.IDENT().size(); i++) nome += "." + ctx.IDENT().get(i).getText();
+        if (ctx.dimensao() != null) { visitDimensao(ctx.dimensao()); }
+       return escopos.getTipoSimbolo(nome);
+    }
+    
     @Override
     public String visitCmdLeia (LAParser.CmdLeiaContext ctx) {
         /* 'leia' '(' '^'? identificador (',' identificador)* ')'  # cmdLeia */
@@ -69,7 +92,7 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
         for (LAParser.IdentificadorContext id : ctx.identificador()) {
           String tipo = escopos.getTipoSimbolo(id.getText());
           if(tipo != null){
-            switch (tipo) {
+                switch (tipo) {
                 case "inteiro":
                   arg += "%d ";
                   break;
@@ -78,9 +101,13 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
                   break;
                 case "real":
                   arg += "%lf ";
+                  break;
+                case "logico":
+                  arg += "%d ";
+                  break;
                 default:
                   break;
-            }
+                }
           }
           var += ",&" + id.getText();
         }
@@ -96,23 +123,62 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
         for (LAParser.ExpressaoContext id : ctx.expressao()) {
           String tipo = visitExpressao(id);
           if(tipo != null){
-            switch (tipo) {
+                switch (tipo) {
                 case "inteiro":
-                  arg += "%d ";
+                  arg += "%d";
                   break;
                 case "literal":
-                  arg += "%s ";
+                  arg += "%s";
                   break;
                 case "real":
-                  arg += "%lf ";
+                  arg += "%lf";
+                  break;
+                case "logico":
+                  arg += "%d";
+                  break;
                 default:
                   break;
-            }
+                }
           }
           var += "," + id.getText();
         }
         sp.println("printf(\"" + arg + "\"" + var + ");");
         return null;
     }
+    
+    @Override
+    public String visitTipo_estendido (LAParser.Tipo_estendidoContext ctx) {
+        /* tipo_estendido : op_ptr? tipo_basico_ident */
+        return ((ctx.op_ptr() != null) ? "^" : "") + visitTipo_basico_ident(ctx.tipo_basico_ident());
+    }
 
+    @Override
+    public String visitParcela_nao_unario_id (LAParser.Parcela_nao_unario_idContext ctx) {
+        /* parcela_nao_unario : '&'  identificador */
+        return "&" + visitIdentificador(ctx.identificador());
+    }
+
+    @Override
+    public String visitParcela_nao_unario_cad (LAParser.Parcela_nao_unario_cadContext ctx) {
+        /* parcela_nao_unario : CADEIA */
+        return "literal";
+    }
+
+    @Override
+    public String visitParcela_logica_atom (LAParser.Parcela_logica_atomContext ctx) {
+        /* parcela_logica : ('verdadeiro' | 'falso') */
+        return "logico";
+    }
+
+    @Override
+    public String visitParcela_unario_atom_int (LAParser.Parcela_unario_atom_intContext ctx) {
+        /* parcela_unario : NUM_INT */
+        return "inteiro";
+    }
+
+    @Override
+    public String visitParcela_unario_atom_real (LAParser.Parcela_unario_atom_realContext ctx) {
+        /* parcela_unario : NUM_REAL */
+        return "real";
+    }
 }
