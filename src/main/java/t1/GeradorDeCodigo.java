@@ -13,6 +13,7 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
         sp.println("#include <stdio.h>");
         sp.println("#include <stdlib.h>");
         sp.println("#include <string.h>");
+        sp.println("");
         visitDeclaracoes(ctx.declaracoes());
         sp.println("int main() {");
         visitCorpo(ctx.corpo());
@@ -83,7 +84,7 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
         if (ctx.dimensao() != null) { visitDimensao(ctx.dimensao()); }
        return escopos.getTipoSimbolo(nome);
     }
-    
+
     @Override
     public String visitCmdLeia (LAParser.CmdLeiaContext ctx) {
         /* 'leia' '(' '^'? identificador (',' identificador)* ')'  # cmdLeia */
@@ -121,8 +122,14 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
         String arg = "";
         String var = "";
         for (LAParser.ExpressaoContext id : ctx.expressao()) {
-          String tipo = visitExpressao(id);
-          if(tipo != null){
+          String tipo = escopos.getTipoSimbolo(id.getText());
+          if(tipo == null){
+            arg += id.getText();
+            arg = arg.startsWith("\"") ? arg.substring(1, arg.length()-1) : arg;
+            System.out.println(arg);
+            arg += " ";
+          }
+          else{
                 switch (tipo) {
                 case "inteiro":
                   arg += "%d";
@@ -139,13 +146,13 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
                 default:
                   break;
                 }
+                var += "," + id.getText();
           }
-          var += "," + id.getText();
         }
         sp.println("printf(\"" + arg + "\"" + var + ");");
         return null;
     }
-    
+
     @Override
     public String visitTipo_estendido (LAParser.Tipo_estendidoContext ctx) {
         /* tipo_estendido : op_ptr? tipo_basico_ident */
