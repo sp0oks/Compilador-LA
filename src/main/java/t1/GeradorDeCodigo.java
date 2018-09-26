@@ -121,21 +121,23 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
         /* 'escreva' '(' expressao (',' expressao)* ')'    # cmdEscreva*/
         String arg = "";
         String var = "";
+        String strg = "";
         for (LAParser.ExpressaoContext id : ctx.expressao()) {
-          String tipo = escopos.getTipoSimbolo(id.getText());
-          if(tipo == null){
-            arg += id.getText();
-            arg = arg.startsWith("\"") ? arg.substring(1, arg.length()-1) : arg;
-            System.out.println(arg);
-            arg += " ";
+          String tipo = visitExpressao(id);
+
+          if(id.getText().startsWith("\"")) {
+            strg = id.getText().substring(1, id.getText().length()-1); //Tira as aspas da string
           }
-          else{
+
+          if(tipo != null){
                 switch (tipo) {
                 case "inteiro":
                   arg += "%d";
                   break;
                 case "literal":
-                  arg += "%s";
+                  if(!id.getText().startsWith("\"")) {
+                    arg += "%s";
+                  }
                   break;
                 case "real":
                   arg += "%lf";
@@ -146,10 +148,12 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
                 default:
                   break;
                 }
-                var += "," + id.getText();
+                if(!id.getText().startsWith("\"")) {
+                  var += "," + id.getText();
+                }
           }
         }
-        sp.println("printf(\"" + arg + "\"" + var + ");");
+        sp.println("printf(\"" + strg + " " + arg + "\"" + var + ");");
         return null;
     }
 
