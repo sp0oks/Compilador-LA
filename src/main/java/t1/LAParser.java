@@ -1,13 +1,18 @@
-// Generated from /home/spooks/github/UFSCar/Compilador-LA/src/main/java/LA.g4 by ANTLR 4.7
+// Generated from C:/Users/Gabriel/IdeaProjects/Compilador-LA/src/main/java\LA.g4 by ANTLR 4.7
 package t1;
-import org.antlr.v4.runtime.atn.*;
-import org.antlr.v4.runtime.dfa.DFA;
+
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
-import org.antlr.v4.runtime.tree.*;
-import java.util.List;
-import java.util.Iterator;
+import org.antlr.v4.runtime.atn.ATN;
+import org.antlr.v4.runtime.atn.ATNDeserializer;
+import org.antlr.v4.runtime.atn.ParserATNSimulator;
+import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.tree.ParseTreeListener;
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+import org.antlr.v4.runtime.tree.TerminalNode;
+
 import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class LAParser extends Parser {
@@ -1597,6 +1602,8 @@ public class LAParser extends Parser {
 		}
 	}
 	public static class CmdParaContext extends CmdContext {
+		public Exp_aritmeticaContext ex1;
+		public Exp_aritmeticaContext ex2;
 		public TerminalNode IDENT() { return getToken(LAParser.IDENT, 0); }
 		public List<Exp_aritmeticaContext> exp_aritmetica() {
 			return getRuleContexts(Exp_aritmeticaContext.class);
@@ -1881,11 +1888,11 @@ public class LAParser extends Parser {
 				setState(307);
 				match(T__37);
 				setState(308);
-				exp_aritmetica();
+				((CmdParaContext)_localctx).ex1 = exp_aritmetica();
 				setState(309);
 				match(T__38);
 				setState(310);
-				exp_aritmetica();
+				((CmdParaContext)_localctx).ex2 = exp_aritmetica();
 				setState(311);
 				match(T__39);
 				setState(315);
