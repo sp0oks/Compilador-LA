@@ -31,23 +31,25 @@ public class GeradorDeCodigo extends LABaseVisitor<String> {
     @Override 
     public String visitDeclaracao_local_var (LAParser.Declaracao_local_varContext ctx) {
         /* declaracao_local: 'declare'  variavel */
-        if (ctx.variavel().tipo().registro() != null && !escopos.topo().existeSimbolo(ctx.variavel().tipo().getText())) {
-            for (LAParser.IdentificadorContext id : ctx.variavel().identificador()) {
-                String var = id.getText();
-                sp.println("struct " + var + " {");
-                registroAtual = new EntradaTabelaDeSimbolos(var, "registro", LAEnums.TipoDeDado.REGISTRO);
-                visitTipo(ctx.variavel().tipo());
-                registroAtual = null;
-                sp.println("};");
-                escopos.topo().adicionarSimbolo(var, "registro", LAEnums.TipoDeDado.REGISTRO);
-            }
-        } else if (escopos.topo().getTipoSimbolo(ctx.variavel().tipo().getText()).equals("tipo")) {
-            for (LAParser.IdentificadorContext id : ctx.variavel().identificador()) {
-                String var = id.getText();
-                registroAtual = new EntradaTabelaDeSimbolos(var, ctx.variavel().tipo().getText(), LAEnums.TipoDeDado.VARIAVEL);
-                visitTipo(ctx.variavel().tipo());
-                visitVariavel(ctx.variavel());
-                registroAtual = null;
+        if (ctx.variavel().tipo().registro() != null) {
+            if (!escopos.topo().existeSimbolo(ctx.variavel().tipo().getText())) {
+                for (LAParser.IdentificadorContext id : ctx.variavel().identificador()) {
+                    String var = id.getText();
+                    sp.println("struct " + var + " {");
+                    registroAtual = new EntradaTabelaDeSimbolos(var, "registro", LAEnums.TipoDeDado.REGISTRO);
+                    visitTipo(ctx.variavel().tipo());
+                    registroAtual = null;
+                    sp.println("};");
+                    escopos.topo().adicionarSimbolo(var, "registro", LAEnums.TipoDeDado.REGISTRO);
+                }
+            } else if (escopos.topo().getTipoSimbolo(ctx.variavel().tipo().getText()).equals("tipo")) {
+                for (LAParser.IdentificadorContext id : ctx.variavel().identificador()) {
+                    String var = id.getText();
+                    registroAtual = new EntradaTabelaDeSimbolos(var, ctx.variavel().tipo().getText(), LAEnums.TipoDeDado.VARIAVEL);
+                    visitTipo(ctx.variavel().tipo());
+                    visitVariavel(ctx.variavel());
+                    registroAtual = null;
+                }
             }
         } else { visitVariavel(ctx.variavel()); }
         return null;
