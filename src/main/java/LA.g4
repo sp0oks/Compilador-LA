@@ -89,7 +89,7 @@ cmd
 |	'escreva' '(' expressao (',' expressao)* ')'    # cmdEscreva
 |	'se' expressao 'entao' (cmdIf+=cmd)* (opElse='senao' (cmdElse+=cmd)*)? 'fim_se'    # cmdSe
 |	'caso' exp_aritmetica 'seja' selecao ('senao' (cmd)*)? 'fim_caso'   # cmdCaso
-|	'para' IDENT '<-' exp_aritmetica 'ate' exp_aritmetica 'faca' (cmd)* 'fim_para'  # cmdPara
+|	'para' IDENT '<-' ex1=exp_aritmetica 'ate' ex2=exp_aritmetica 'faca' (cmd)* 'fim_para'  # cmdPara
 |	'enquanto' expressao 'faca' (cmd)* 'fim_enquanto'   # cmdEnquanto
 |	'faca' (cmd)* 'ate' expressao   # cmdFaca
 | 	op_ptr? identificador '<-' expressao   # cmdAtribuicao
