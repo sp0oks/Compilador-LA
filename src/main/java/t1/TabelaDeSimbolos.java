@@ -34,6 +34,10 @@ public class TabelaDeSimbolos {
     public String getNome() {
       return escopo;
     }
+    
+    public List<EntradaTabelaDeSimbolos> getSimbolos() {
+        return simbolos;
+    }
 
     @Override
     public String toString() {
